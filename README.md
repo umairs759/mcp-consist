@@ -1,3 +1,14 @@
+---
+title: MCP-Consist
+emoji: 🛡️
+colorFrom: red
+colorTo: green
+sdk: gradio
+sdk_version: 5.0.0
+app_file: demo/app.py
+pinned: false
+---
+
 # MCP-Consist: Multi-Context Consistency Checker
 
 ## Overview
