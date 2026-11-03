@@ -1,13 +1,14 @@
 ---
-title: 🛡️ MCP-Consist: Context-Consistency Enforcement for MCP Tool-Poisoning Detection
-emoji: 🛡️
-colorFrom: red
-colorTo: green
-sdk: gradio
-sdk_version: 5.0.0
-app_file: demo/app.py
+title: "🛡️ MCP Consist: Context-Consistency Enforcement for MCP Tool-Poisoning Detection"
+emoji: "🛡️"
+colorFrom: "red"
+colorTo: "green"
+sdk: "gradio"
+sdk_version: "5.0.0"
+app_file: "demo/app.py"
 pinned: false
 ---
+
 
 # 🛡️ MCP-Consist: Context-Consistency Enforcement for MCP Tool-Poisoning Detection
 
