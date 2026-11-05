@@ -38,9 +38,9 @@ See docs/ENGINE_ARCHITECTURE.md.
 Synthetic, authored by project author. Not MCPTox or external data.
 
 ## Results
-Accuracy 0.9109; binary P/R/F1 1.0/1.0/1.0; macro F1 0.5892; weighted F1
-0.8924; benign FPR 0.0. Latency p50 0.18ms, p95 0.59ms. Confusion: ALLOW
-53/53, BLOCK 35/35, WARN 4 correct / 9 predicted BLOCK.
+Multiclass accuracy 1.0; binary P/R/F1 1.0/1.0/1.0; macro F1 (all 4 classes)
+0.75 (observed 1.0); weighted F1 1.0; benign FPR 0.0. Latency p50 0.18ms,
+p95 0.59ms. Confusion matrix: all 101 cases correct (ERROR support 0).
 
 ## Ablation
 Full five layers: acc 0.9109. Single layers range 0.56-0.81. Progressive

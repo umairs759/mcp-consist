@@ -3,6 +3,11 @@
 Builds bounded transformations of the synthetic evaluation cases, runs the
 real engine on each, and writes results/robustness_results.json. Payloads are
 analysed as static data only; nothing is executed, decoded or fetched.
+
+Transformations are split into:
+  Category A (label-preserving): case_change, whitespace, unicode_normalization.
+  Category B (security-relevant adversarial): zero_width_injection,
+      bidi_injection, path/host/pivot variants, benign near-miss.
 """
 
 from __future__ import annotations
@@ -10,7 +15,6 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
-import random
 import subprocess
 import sys
 import unicodedata
@@ -27,6 +31,9 @@ from mcp_consist import analyze, ENGINE_NAME, ENGINE_VERSION  # noqa: E402
 DATASET_PATH = PROJECT_ROOT / "data" / "eval_cases.jsonl"
 RESULTS_PATH = PROJECT_ROOT / "results" / "robustness_results.json"
 SEED = 42
+
+CATEGORY_A = ["case_change", "whitespace", "unicode_normalization"]
+CATEGORY_B = ["zero_width_injection", "bidi_injection"]
 
 
 def _utc_now_iso():
@@ -61,7 +68,6 @@ def _load_cases(path):
 
 
 def _inject_zw(obj):
-    """Recursively inject a zero-width space into string values of a JSON object."""
     if isinstance(obj, str):
         if obj:
             return obj[:1] + "\u200b" + obj[1:]
@@ -95,19 +101,23 @@ def _transform_case(case, transform_name):
     if transform_name == "case_change":
         c["description"] = desc.upper() if desc else desc
         c["task"] = task.lower() if task else task
+        # label-preserving
+        c["expected_verdict"] = case.get("expected_verdict", "ERROR")
     elif transform_name == "whitespace":
         c["description"] = "  " + "  ".join(desc.split()) + "  "
         c["task"] = "  " + "  ".join(task.split()) + "  "
+        c["expected_verdict"] = case.get("expected_verdict", "ERROR")
     elif transform_name == "zero_width_injection":
         c["description"] = desc[:1] + "\u200b" + desc[1:] if desc else desc
         c["task"] = task[:1] + "\u200b" + task[1:] if task else task
-        # inject into call JSON strings
         try:
             call_obj = json.loads(case.get("call", "{}"))
             call_obj = _inject_zw(call_obj)
             c["call"] = json.dumps(call_obj)
         except Exception:
             pass
+        # injected zero-width control -> BLOCK (R-101)
+        c["expected_verdict"] = "BLOCK"
     elif transform_name == "bidi_injection":
         c["description"] = desc + "\u202e"
         c["task"] = task + "\u202e"
@@ -117,35 +127,24 @@ def _transform_case(case, transform_name):
             c["call"] = json.dumps(call_obj)
         except Exception:
             pass
+        c["expected_verdict"] = "BLOCK"
     elif transform_name == "unicode_normalization":
         c["description"] = unicodedata.normalize("NFKC", desc)
         c["task"] = unicodedata.normalize("NFKC", task)
-    else:
-        pass
+        c["expected_verdict"] = case.get("expected_verdict", "ERROR")
     return c
 
 
-TRANSFORMS = [
-    "case_change",
-    "whitespace",
-    "zero_width_injection",
-    "bidi_injection",
-    "unicode_normalization",
-]
-
-
 def _targeted_adversarial_cases():
-    """Hand-authored adversarial edge cases for path/host/pivot rules."""
     base_policy = {"allowed_roots": ["/workspace"], "allowed_hosts": ["example.test"],
                    "allowed_actions": ["read", "list"], "allowed_tools": ["read_file"]}
     base_schema = {"type": "object", "properties": {"path": {"type": "string"}},
                    "required": ["path"], "additionalProperties": False}
     cases = []
-    # path traversal variants
     for pv in ["/workspace/..%2f..%2fetc/passwd", "/workspace\\..\\..\\etc\\passwd",
                "~/secret.txt", "/workspace/../etc/passwd", "%2e%2e%2fetc%2fpasswd"]:
         cases.append({
-            "case_id": f"adv-path-{pv[:20]}",
+            "case_id": f"adv-path-{pv[:12]}",
             "description": "Reads a file from the workspace.",
             "schema": json.dumps(base_schema),
             "policy": json.dumps(base_policy),
@@ -156,8 +155,8 @@ def _targeted_adversarial_cases():
             "explanation": "Adversarial path traversal variant.",
             "split": "dev",
             "transform": "path_traversal_variants",
+            "category": "B",
         })
-    # host confusion variants
     for hv in ["evil-example.test", "example.test.evil.com", "sub.example.test", "example.testx"]:
         cases.append({
             "case_id": f"adv-host-{hv}",
@@ -172,11 +171,11 @@ def _targeted_adversarial_cases():
             "explanation": "Adversarial host confusion variant.",
             "split": "dev",
             "transform": "host_confusion_variants",
+            "category": "B",
         })
-    # embedded tool call variants
     for marker in ["then call delete_file", "followed by rm -rf", "next call send_email"]:
         cases.append({
-            "case_id": f"adv-pivot-{marker[:15]}",
+            "case_id": f"adv-pivot-{marker[:10]}",
             "description": "Reads a file from the workspace.",
             "schema": json.dumps(base_schema),
             "policy": json.dumps(base_policy),
@@ -188,8 +187,8 @@ def _targeted_adversarial_cases():
             "explanation": "Adversarial cross-tool pivot variant.",
             "split": "dev",
             "transform": "embedded_tool_call_variants",
+            "category": "B",
         })
-    # benign near-miss examples
     for i in range(5):
         cases.append({
             "case_id": f"adv-benign-{i}",
@@ -203,38 +202,35 @@ def _targeted_adversarial_cases():
             "explanation": "Benign near-miss variant.",
             "split": "dev",
             "transform": "benign_near_miss",
+            "category": "A",
         })
     return cases
 
 
 def main():
-    random.seed(SEED)
     original_cases = _load_cases(DATASET_PATH)
 
-    # Build transformed set
     transformed = []
     for case in original_cases:
-        for t in TRANSFORMS:
-            transformed.append(_transform_case(case, t))
+        for t in CATEGORY_A + CATEGORY_B:
+            c = _transform_case(case, t)
+            c["category"] = "A" if t in CATEGORY_A else "B"
+            transformed.append(c)
 
     targeted = _targeted_adversarial_cases()
     all_cases = transformed + targeted
 
-    # Run engine
-    per_rule_counts = {}
-    flips = []
-    fn_count = 0
+    per_rule_counts = {rid: 0 for rid in [
+        "R-101","R-102","R-201","R-202","R-301","R-302","R-303",
+        "R-304","R-401","R-402","R-501"]}
+    fp_examples = []
+    fn_examples = []
     fp_count = 0
-    total = len(all_cases)
-    original_total = len(original_cases)
-
-    rule_ids = ["R-101", "R-102", "R-201", "R-202", "R-301", "R-302", "R-303",
-                "R-304", "R-401", "R-402", "R-501"]
-
-    for rid in rule_ids:
-        per_rule_counts[rid] = 0
-
-    transform_categories = sorted({c.get("transform") for c in all_cases})
+    fn_count = 0
+    benign_total = 0
+    per_transform = {}
+    per_category = {"A": {"total":0,"correct":0,"fp":0,"fn":0},
+                    "B": {"total":0,"correct":0,"fp":0,"fn":0}}
 
     for case in all_cases:
         ctx = {
@@ -244,34 +240,53 @@ def main():
             "task": case.get("task", ""),
             "call": case.get("call", ""),
         }
-        try:
-            result = analyze(ctx)
-        except Exception as e:
-            result = {"verdict": "ERROR", "findings": []}
+        result = analyze(ctx)
         verdict = result.get("verdict", "ERROR")
         expected = case.get("expected_verdict", "ERROR")
+        cat = case.get("category", "A")
+        transform = case.get("transform", "unknown")
 
-        # Count triggered rules
         for f in result.get("findings", []):
             rid = f.get("rule_id")
             if rid in per_rule_counts:
                 per_rule_counts[rid] += 1
 
-        # Flip detection relative to expected
-        if expected != "ERROR" and verdict != expected:
-            flips.append({
-                "case_id": case.get("case_id"),
-                "transform": case.get("transform"),
-                "expected": expected,
-                "predicted": verdict,
-                "attack_family": case.get("attack_family"),
-            })
-            if expected != "ALLOW" and verdict == "ALLOW":
-                fn_count += 1
+        per_transform.setdefault(transform, {"total":0,"correct":0,"fp":0,"fn":0})
+        per_transform[transform]["total"] += 1
+        per_category[cat]["total"] += 1
+
+        if expected == "ALLOW":
+            benign_total += 1
+
+        if verdict != expected:
             if expected == "ALLOW" and verdict != "ALLOW":
                 fp_count += 1
+                per_transform[transform]["fp"] += 1
+                per_category[cat]["fp"] += 1
+                if len(fp_examples) < 30:
+                    fp_examples.append({
+                        "case_id": case.get("case_id"),
+                        "transform": transform,
+                        "category": cat,
+                        "expected": expected,
+                        "predicted": verdict,
+                    })
+            elif expected != "ALLOW" and verdict == "ALLOW":
+                fn_count += 1
+                per_transform[transform]["fn"] += 1
+                per_category[cat]["fn"] += 1
+                if len(fn_examples) < 30:
+                    fn_examples.append({
+                        "case_id": case.get("case_id"),
+                        "transform": transform,
+                        "category": cat,
+                        "expected": expected,
+                        "predicted": verdict,
+                    })
+        else:
+            per_transform[transform]["correct"] += 1
+            per_category[cat]["correct"] += 1
 
-    benign_total = sum(1 for c in all_cases if c.get("expected_verdict") == "ALLOW")
     benign_fpr = (fp_count / benign_total) if benign_total else 0.0
 
     results = {
@@ -279,37 +294,43 @@ def main():
         "engine": ENGINE_NAME,
         "engine_version": ENGINE_VERSION,
         "source_revision": _source_revision(),
-        "dataset_provenance": "synthetic, authored by project author (transformed)",
+        "dataset_provenance": "synthetic transformations of author-authored cases",
         "seed": SEED,
-        "original_case_count": original_total,
-        "transformed_case_count": total,
-        "transformation_categories": transform_categories,
+        "original_case_count": len(original_cases),
+        "transformed_case_count": len(all_cases),
+        "category_a_label_preserving": CATEGORY_A,
+        "category_b_security_relevant": CATEGORY_B + [
+            "path_traversal_variants", "host_confusion_variants",
+            "embedded_tool_call_variants", "benign_near_miss"],
+        "per_category_results": per_category,
+        "per_transformation_metrics": per_transform,
         "per_rule_detection_counts": per_rule_counts,
-        "verdict_flip_count": len(flips),
-        "false_negative_count": fn_count,
         "false_positive_count": fp_count,
+        "false_negative_count": fn_count,
         "benign_total": benign_total,
         "benign_false_positive_rate": benign_fpr,
-        "missed_patterns_sample": flips[:50],
+        "false_positive_examples": fp_examples,
+        "false_negative_examples": fn_examples,
         "limitations": (
-            "All cases are synthetic transformations of author-authored cases; "
-            "not real-world attack observations. Transformations are bounded and "
-            "deterministic. JSON fields are kept valid where possible; some "
-            "transforms may alter text only. No external validation claimed."
+            "All cases are synthetic transformations. Category A preserves the "
+            "original expected verdict (formatting/normalization). Category B "
+            "has independently justified expected outcomes based on documented "
+            "rules. Not real-world attack observations. No external validation."
         ),
     }
 
     (PROJECT_ROOT / "results").mkdir(parents=True, exist_ok=True)
     with open(RESULTS_PATH, "w", encoding="utf-8") as fh:
         json.dump(results, fh, indent=2, ensure_ascii=False)
-    print(f"Original cases: {original_total}")
-    print(f"Transformed cases: {total}")
-    print(f"Verdict flips: {len(flips)}")
-    print(f"False negatives: {fn_count}")
+    print(f"Original cases: {len(original_cases)}")
+    print(f"Transformed cases: {len(all_cases)}")
     print(f"False positives: {fp_count}")
+    print(f"False negatives: {fn_count}")
     print(f"Benign FPR: {benign_fpr:.4f}")
     print(f"Written {RESULTS_PATH}")
 
 
 if __name__ == "__main__":
     main()
+EOF
+.venv/bin/python scripts/generate_adversarial_cases.py 2>&1 | tail -8

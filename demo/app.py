@@ -726,6 +726,7 @@ def build_demo():
                             headers=["timestamp", "scenario", "verdict", "score", "latency_ms"],
                             value=[],
                             interactive=False,
+                            row_count=1,
                         )
 
             # --- Project Info tab ---

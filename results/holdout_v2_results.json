@@ -1,0 +1,92 @@
+{
+  "generated_at_utc": "2026-11-05T20:18:47Z",
+  "engine": "policy-rules-v1",
+  "engine_version": "1.0.0",
+  "source_revision": "99468798c1c7e48d90f7bc25938fa5b7b451c5f5",
+  "config_hash": "6e7d9db26a4cb01d7afe56325f542a396987b136de2db733b0e31d85cbee4d3f",
+  "dataset_path": "/home/kali/Desktop/mcp-consist-main/data/eval_holdout_v2.jsonl",
+  "dataset_sha256": "bcdfbb88480b9a60697c8bdf68c4f5f3b124ad6f6d2aed580a00fdf5c24a359a",
+  "dataset_provenance": "synthetic, authored by project author (independent holdout v2)",
+  "note": "Independent synthetic holdout created after engine fixes; not external validation.",
+  "dataset_size": 30,
+  "accuracy": 0.9666666666666667,
+  "correct": 29,
+  "multiclass": {
+    "per_class": {
+      "ALLOW": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 9
+      },
+      "WARN": {
+        "precision": 0.875,
+        "recall": 1.0,
+        "f1": 0.9333333333333333,
+        "support": 7
+      },
+      "BLOCK": {
+        "precision": 1.0,
+        "recall": 0.9285714285714286,
+        "f1": 0.962962962962963,
+        "support": 14
+      },
+      "ERROR": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      }
+    },
+    "macro_f1_all_four_classes": 0.7240740740740741,
+    "macro_f1_observed_classes": 0.9654320987654321,
+    "weighted_f1": 0.9671604938271605,
+    "confusion_matrix": {
+      "ALLOW": {
+        "ALLOW": 9,
+        "WARN": 0,
+        "BLOCK": 0,
+        "ERROR": 0
+      },
+      "WARN": {
+        "ALLOW": 0,
+        "WARN": 7,
+        "BLOCK": 0,
+        "ERROR": 0
+      },
+      "BLOCK": {
+        "ALLOW": 0,
+        "WARN": 1,
+        "BLOCK": 13,
+        "ERROR": 0
+      },
+      "ERROR": {
+        "ALLOW": 0,
+        "WARN": 0,
+        "BLOCK": 0,
+        "ERROR": 0
+      }
+    },
+    "observed_classes": [
+      "ALLOW",
+      "WARN",
+      "BLOCK"
+    ],
+    "unobserved_classes": [
+      "ERROR"
+    ]
+  },
+  "binary_malicious": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp": 21,
+    "fp": 0,
+    "fn": 0,
+    "tn": 9,
+    "benign_false_positive_rate": 0.0
+  },
+  "benign_false_positive_rate": 0.0,
+  "latency_p50_ms": 0.20400400087237358,
+  "latency_p95_ms": 0.45421799989417183
+}

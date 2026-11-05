@@ -278,6 +278,10 @@ def rule_R201_schema_validation(schema_text: str, call_text: str) -> list[Findin
     # 2. Unknown arguments + type/enum validation for declared args.
     for arg_name, arg_value in args.items():
         if arg_name not in declared:
+            # Side-channel parameter names are handled by R-202 at MEDIUM
+            # severity; do not double-count them as generic unknown args.
+            if arg_name.lower() in SIDE_CHANNEL_PARAM_NAMES:
+                continue
             # Unknown argument.
             if additional_props is False:
                 findings.append(_finding(

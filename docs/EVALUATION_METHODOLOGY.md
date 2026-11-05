@@ -22,6 +22,18 @@ Configurations: none, each individual, progressive combinations, full.
 transformations (case, whitespace, zero-width, bidi, unicode normalization)
 plus targeted path/host/pivot variants. Results in robustness_results.json.
 
+## Multiclass vs binary
+Multiclass metrics cover ALLOW/WARN/BLOCK/ERROR. Binary malicious metrics
+treat non-ALLOW as malicious. ERROR has zero support in the main dataset.
+
+## Split reporting
+Development, holdout and overall metrics are reported separately in
+results/eval_results.json.
+
+## Macro F1 note
+Macro F1 over all four states is 0.75 due to the unobserved ERROR class
+(F1 0.0). Observed-class macro F1 is 1.0.
+
 ## Reproducibility
 Dataset SHA-256, engine version, source revision, config hash recorded.
 Re-running evaluate.py reproduces non-latency metrics.

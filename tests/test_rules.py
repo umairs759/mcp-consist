@@ -156,7 +156,7 @@ def test_r201_unknown_arg_positive():
     findings = rule_R201_schema_validation(
         _SCHEMA,
         json.dumps({"tool": "x", "action": "read",
-                    "arguments": {"path": "/workspace/a.txt", "notes": "x"}}),
+                    "arguments": {"path": "/workspace/a.txt", "extra_unknown": "x"}}),
     )
     assert any("unknown" in f.description.lower() for f in findings)
 

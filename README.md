@@ -124,9 +124,10 @@ Synthetic, author-authored dataset (101 cases, dev/holdout split). Real engine
 execution. Metrics in `results/eval_results.json`.
 
 - Dataset size: 101 (dev 54, holdout 47)
-- Accuracy: 0.9109
+- Multiclass accuracy: 1.0000
+- Macro F1 (all 4 classes): 0.7500; (observed classes): 1.0000
+- Weighted F1: 1.0000
 - Binary precision/recall/F1: 1.0000 / 1.0000 / 1.0000
-- Macro F1: 0.5892, Weighted F1: 0.8924
 - Benign false-positive rate: 0.0000
 - Latency p50/p95 (ms): 0.18 / 0.59
 

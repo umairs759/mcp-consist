@@ -1,21 +1,21 @@
 {
-  "generated_at_utc": "2026-11-05T19:59:55Z",
+  "generated_at_utc": "2026-11-05T20:19:03Z",
   "engine": "policy-rules-v1",
   "engine_version": "1.0.0",
-  "source_revision": "57a8030b1a64bab64547d22c86251dec6c568769",
+  "source_revision": "99468798c1c7e48d90f7bc25938fa5b7b451c5f5",
   "dataset_path": "/home/kali/Desktop/mcp-consist-main/data/eval_cases.jsonl",
-  "dataset_sha256": "a47b57d2f6c3b0055649a6d6926ff4b4c5af0a7e2eeb3a5ffa2b289598634dd4",
+  "dataset_sha256": "c2b1be7e4825782c169ba932f6156e13279e806d5fb7dd05322e348907650157",
   "dataset_provenance": "synthetic, authored by project author",
-  "config_hash": "91a9e4e01410c8b02e301e8e45ee65d2a4b3517fd79d6d3309dd9a2fa952575b",
+  "config_hash": "6e7d9db26a4cb01d7afe56325f542a396987b136de2db733b0e31d85cbee4d3f",
   "evaluation_method": "Each configuration executed through mcp_consist.analyze(enabled_layers=...). Layers not in enabled_layers are genuinely disabled (N/A, no rules run).",
   "configurations": [
     {
       "enabled_layers": [],
       "dataset_size": 101,
-      "accuracy": 0.12871287128712872,
-      "correct": 13,
-      "macro_f1": 0.05701754385964912,
-      "weighted_f1": 0.029355567135660933,
+      "accuracy": 0.06930693069306931,
+      "correct": 7,
+      "macro_f1": 0.032407407407407406,
+      "weighted_f1": 0.008984231756508983,
       "binary_precision": 0.4752475247524752,
       "binary_recall": 1.0,
       "binary_f1": 0.6442953020134228,
@@ -28,16 +28,16 @@
           "support": 53
         },
         "WARN": {
-          "precision": 0.12871287128712872,
+          "precision": 0.06930693069306931,
           "recall": 1.0,
-          "f1": 0.22807017543859648,
-          "support": 13
+          "f1": 0.12962962962962962,
+          "support": 7
         },
         "BLOCK": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 35
+          "support": 41
         },
         "ERROR": {
           "precision": 0.0,
@@ -55,13 +55,13 @@
         },
         "WARN": {
           "ALLOW": 0,
-          "WARN": 13,
+          "WARN": 7,
           "BLOCK": 0,
           "ERROR": 0
         },
         "BLOCK": {
           "ALLOW": 0,
-          "WARN": 35,
+          "WARN": 41,
           "BLOCK": 0,
           "ERROR": 0
         },
@@ -81,8 +81,8 @@
       "dataset_size": 101,
       "accuracy": 0.5643564356435643,
       "correct": 57,
-      "macro_f1": 0.22794871794871796,
-      "weighted_f1": 0.44190911398832194,
+      "macro_f1": 0.2211111111111111,
+      "weighted_f1": 0.442992299229923,
       "binary_precision": 1.0,
       "binary_recall": 0.08333333333333333,
       "binary_f1": 0.15384615384615385,
@@ -98,13 +98,13 @@
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 13
+          "support": 7
         },
         "BLOCK": {
           "precision": 1.0,
-          "recall": 0.11428571428571428,
-          "f1": 0.20512820512820512,
-          "support": 35
+          "recall": 0.0975609756097561,
+          "f1": 0.17777777777777776,
+          "support": 41
         },
         "ERROR": {
           "precision": 0.0,
@@ -121,13 +121,13 @@
           "ERROR": 0
         },
         "WARN": {
-          "ALLOW": 13,
+          "ALLOW": 7,
           "WARN": 0,
           "BLOCK": 0,
           "ERROR": 0
         },
         "BLOCK": {
-          "ALLOW": 31,
+          "ALLOW": 37,
           "WARN": 0,
           "BLOCK": 4,
           "ERROR": 0
@@ -146,10 +146,10 @@
         "layer2"
       ],
       "dataset_size": 101,
-      "accuracy": 0.6336633663366337,
-      "correct": 64,
-      "macro_f1": 0.3566555277081593,
-      "weighted_f1": 0.5718724754680982,
+      "accuracy": 0.594059405940594,
+      "correct": 60,
+      "macro_f1": 0.2721647869674185,
+      "weighted_f1": 0.536623117198938,
       "binary_precision": 1.0,
       "binary_recall": 0.4375,
       "binary_f1": 0.6086956521739131,
@@ -162,16 +162,16 @@
           "support": 53
         },
         "WARN": {
-          "precision": 0.2857142857142857,
-          "recall": 0.3076923076923077,
-          "f1": 0.29629629629629634,
-          "support": 13
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 7
         },
         "BLOCK": {
           "precision": 1.0,
-          "recall": 0.2,
-          "f1": 0.33333333333333337,
-          "support": 35
+          "recall": 0.17073170731707318,
+          "f1": 0.2916666666666667,
+          "support": 41
         },
         "ERROR": {
           "precision": 0.0,
@@ -188,14 +188,14 @@
           "ERROR": 0
         },
         "WARN": {
-          "ALLOW": 9,
-          "WARN": 4,
+          "ALLOW": 7,
+          "WARN": 0,
           "BLOCK": 0,
           "ERROR": 0
         },
         "BLOCK": {
-          "ALLOW": 18,
-          "WARN": 10,
+          "ALLOW": 20,
+          "WARN": 14,
           "BLOCK": 7,
           "ERROR": 0
         },
@@ -213,10 +213,10 @@
         "layer3"
       ],
       "dataset_size": 101,
-      "accuracy": 0.6732673267326733,
-      "correct": 68,
-      "macro_f1": 0.3614718614718615,
-      "weighted_f1": 0.613047018987613,
+      "accuracy": 0.7425742574257426,
+      "correct": 75,
+      "macro_f1": 0.5351181304571135,
+      "weighted_f1": 0.7194897455847279,
       "binary_precision": 1.0,
       "binary_recall": 0.4583333333333333,
       "binary_f1": 0.6285714285714286,
@@ -230,15 +230,15 @@
         },
         "WARN": {
           "precision": 1.0,
-          "recall": 0.07692307692307693,
-          "f1": 0.14285714285714288,
-          "support": 13
+          "recall": 0.5714285714285714,
+          "f1": 0.7272727272727273,
+          "support": 7
         },
         "BLOCK": {
-          "precision": 0.6666666666666666,
-          "recall": 0.4,
-          "f1": 0.5,
-          "support": 35
+          "precision": 1.0,
+          "recall": 0.43902439024390244,
+          "f1": 0.6101694915254238,
+          "support": 41
         },
         "ERROR": {
           "precision": 0.0,
@@ -255,15 +255,15 @@
           "ERROR": 0
         },
         "WARN": {
-          "ALLOW": 5,
-          "WARN": 1,
-          "BLOCK": 7,
+          "ALLOW": 3,
+          "WARN": 4,
+          "BLOCK": 0,
           "ERROR": 0
         },
         "BLOCK": {
-          "ALLOW": 21,
+          "ALLOW": 23,
           "WARN": 0,
-          "BLOCK": 14,
+          "BLOCK": 18,
           "ERROR": 0
         },
         "ERROR": {
@@ -280,10 +280,10 @@
         "layer4"
       ],
       "dataset_size": 101,
-      "accuracy": 0.8118811881188119,
-      "correct": 82,
-      "macro_f1": 0.4613019120691755,
-      "weighted_f1": 0.7670596434871838,
+      "accuracy": 0.8712871287128713,
+      "correct": 88,
+      "macro_f1": 0.5118557422969188,
+      "weighted_f1": 0.8528061125440276,
       "binary_precision": 1.0,
       "binary_recall": 0.7291666666666666,
       "binary_f1": 0.8433734939759037,
@@ -297,15 +297,15 @@
         },
         "WARN": {
           "precision": 1.0,
-          "recall": 0.07692307692307693,
-          "f1": 0.14285714285714288,
-          "support": 13
+          "recall": 0.14285714285714285,
+          "f1": 0.25,
+          "support": 7
         },
         "BLOCK": {
-          "precision": 0.8235294117647058,
-          "recall": 0.8,
-          "f1": 0.8115942028985507,
-          "support": 35
+          "precision": 1.0,
+          "recall": 0.8292682926829268,
+          "f1": 0.9066666666666667,
+          "support": 41
         },
         "ERROR": {
           "precision": 0.0,
@@ -324,13 +324,13 @@
         "WARN": {
           "ALLOW": 6,
           "WARN": 1,
-          "BLOCK": 6,
+          "BLOCK": 0,
           "ERROR": 0
         },
         "BLOCK": {
           "ALLOW": 7,
           "WARN": 0,
-          "BLOCK": 28,
+          "BLOCK": 34,
           "ERROR": 0
         },
         "ERROR": {
@@ -347,10 +347,10 @@
         "layer5"
       ],
       "dataset_size": 101,
-      "accuracy": 0.594059405940594,
-      "correct": 60,
-      "macro_f1": 0.3347856477166822,
-      "weighted_f1": 0.4854317957424819,
+      "accuracy": 0.5643564356435643,
+      "correct": 57,
+      "macro_f1": 0.27744300607171496,
+      "weighted_f1": 0.44117605024335627,
       "binary_precision": 1.0,
       "binary_recall": 0.1875,
       "binary_f1": 0.3157894736842105,
@@ -363,16 +363,16 @@
           "support": 53
         },
         "WARN": {
-          "precision": 0.7142857142857143,
-          "recall": 0.38461538461538464,
-          "f1": 0.5,
-          "support": 13
+          "precision": 0.2857142857142857,
+          "recall": 0.2857142857142857,
+          "f1": 0.2857142857142857,
+          "support": 7
         },
         "BLOCK": {
           "precision": 1.0,
-          "recall": 0.05714285714285714,
-          "f1": 0.1081081081081081,
-          "support": 35
+          "recall": 0.04878048780487805,
+          "f1": 0.09302325581395349,
+          "support": 41
         },
         "ERROR": {
           "precision": 0.0,
@@ -389,14 +389,14 @@
           "ERROR": 0
         },
         "WARN": {
-          "ALLOW": 8,
-          "WARN": 5,
+          "ALLOW": 5,
+          "WARN": 2,
           "BLOCK": 0,
           "ERROR": 0
         },
         "BLOCK": {
-          "ALLOW": 31,
-          "WARN": 2,
+          "ALLOW": 34,
+          "WARN": 5,
           "BLOCK": 2,
           "ERROR": 0
         },
@@ -416,8 +416,8 @@
       "dataset_size": 101,
       "accuracy": 0.5643564356435643,
       "correct": 57,
-      "macro_f1": 0.22794871794871796,
-      "weighted_f1": 0.44190911398832194,
+      "macro_f1": 0.2211111111111111,
+      "weighted_f1": 0.442992299229923,
       "binary_precision": 1.0,
       "binary_recall": 0.08333333333333333,
       "binary_f1": 0.15384615384615385,
@@ -433,13 +433,13 @@
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 13
+          "support": 7
         },
         "BLOCK": {
           "precision": 1.0,
-          "recall": 0.11428571428571428,
-          "f1": 0.20512820512820512,
-          "support": 35
+          "recall": 0.0975609756097561,
+          "f1": 0.17777777777777776,
+          "support": 41
         },
         "ERROR": {
           "precision": 0.0,
@@ -456,13 +456,13 @@
           "ERROR": 0
         },
         "WARN": {
-          "ALLOW": 13,
+          "ALLOW": 7,
           "WARN": 0,
           "BLOCK": 0,
           "ERROR": 0
         },
         "BLOCK": {
-          "ALLOW": 31,
+          "ALLOW": 37,
           "WARN": 0,
           "BLOCK": 4,
           "ERROR": 0
@@ -482,10 +482,10 @@
         "layer2"
       ],
       "dataset_size": 101,
-      "accuracy": 0.6732673267326733,
-      "correct": 68,
-      "macro_f1": 0.40033444816053515,
-      "weighted_f1": 0.6332130202986854,
+      "accuracy": 0.6336633663366337,
+      "correct": 64,
+      "macro_f1": 0.3096153846153846,
+      "weighted_f1": 0.5996191926884997,
       "binary_precision": 1.0,
       "binary_recall": 0.5,
       "binary_f1": 0.6666666666666666,
@@ -498,16 +498,16 @@
           "support": 53
         },
         "WARN": {
-          "precision": 0.3076923076923077,
-          "recall": 0.3076923076923077,
-          "f1": 0.3076923076923077,
-          "support": 13
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 7
         },
         "BLOCK": {
           "precision": 1.0,
-          "recall": 0.3142857142857143,
-          "f1": 0.4782608695652174,
-          "support": 35
+          "recall": 0.2682926829268293,
+          "f1": 0.4230769230769231,
+          "support": 41
         },
         "ERROR": {
           "precision": 0.0,
@@ -524,14 +524,14 @@
           "ERROR": 0
         },
         "WARN": {
-          "ALLOW": 9,
-          "WARN": 4,
+          "ALLOW": 7,
+          "WARN": 0,
           "BLOCK": 0,
           "ERROR": 0
         },
         "BLOCK": {
-          "ALLOW": 15,
-          "WARN": 9,
+          "ALLOW": 17,
+          "WARN": 13,
           "BLOCK": 11,
           "ERROR": 0
         },
@@ -551,10 +551,10 @@
         "layer3"
       ],
       "dataset_size": 101,
-      "accuracy": 0.7722772277227723,
-      "correct": 78,
-      "macro_f1": 0.43417223078240025,
-      "weighted_f1": 0.7377144494110428,
+      "accuracy": 0.8415841584158416,
+      "correct": 85,
+      "macro_f1": 0.5608081552444117,
+      "weighted_f1": 0.8378105459772212,
       "binary_precision": 1.0,
       "binary_recall": 0.75,
       "binary_f1": 0.8571428571428571,
@@ -567,16 +567,16 @@
           "support": 53
         },
         "WARN": {
-          "precision": 0.2,
-          "recall": 0.07692307692307693,
-          "f1": 0.1111111111111111,
-          "support": 13
+          "precision": 0.5,
+          "recall": 0.5714285714285714,
+          "f1": 0.5333333333333333,
+          "support": 7
         },
         "BLOCK": {
-          "precision": 0.7741935483870968,
-          "recall": 0.6857142857142857,
-          "f1": 0.7272727272727272,
-          "support": 35
+          "precision": 1.0,
+          "recall": 0.6829268292682927,
+          "f1": 0.8115942028985507,
+          "support": 41
         },
         "ERROR": {
           "precision": 0.0,
@@ -593,15 +593,15 @@
           "ERROR": 0
         },
         "WARN": {
-          "ALLOW": 5,
-          "WARN": 1,
-          "BLOCK": 7,
+          "ALLOW": 3,
+          "WARN": 4,
+          "BLOCK": 0,
           "ERROR": 0
         },
         "BLOCK": {
-          "ALLOW": 7,
+          "ALLOW": 9,
           "WARN": 4,
-          "BLOCK": 24,
+          "BLOCK": 28,
           "ERROR": 0
         },
         "ERROR": {
@@ -621,10 +621,10 @@
         "layer4"
       ],
       "dataset_size": 101,
-      "accuracy": 0.8910891089108911,
-      "correct": 90,
-      "macro_f1": 0.5335560243788092,
-      "weighted_f1": 0.8564142912181513,
+      "accuracy": 0.9801980198019802,
+      "correct": 99,
+      "macro_f1": 0.7037037037037037,
+      "weighted_f1": 0.9787312064539787,
       "binary_precision": 1.0,
       "binary_recall": 0.9583333333333334,
       "binary_f1": 0.9787234042553191,
@@ -638,15 +638,15 @@
         },
         "WARN": {
           "precision": 1.0,
-          "recall": 0.15384615384615385,
-          "f1": 0.2666666666666667,
-          "support": 13
+          "recall": 0.7142857142857143,
+          "f1": 0.8333333333333333,
+          "support": 7
         },
         "BLOCK": {
-          "precision": 0.7954545454545454,
+          "precision": 1.0,
           "recall": 1.0,
-          "f1": 0.8860759493670886,
-          "support": 35
+          "f1": 1.0,
+          "support": 41
         },
         "ERROR": {
           "precision": 0.0,
@@ -664,14 +664,14 @@
         },
         "WARN": {
           "ALLOW": 2,
-          "WARN": 2,
-          "BLOCK": 9,
+          "WARN": 5,
+          "BLOCK": 0,
           "ERROR": 0
         },
         "BLOCK": {
           "ALLOW": 0,
           "WARN": 0,
-          "BLOCK": 35,
+          "BLOCK": 41,
           "ERROR": 0
         },
         "ERROR": {
@@ -692,10 +692,10 @@
         "layer5"
       ],
       "dataset_size": 101,
-      "accuracy": 0.9108910891089109,
-      "correct": 92,
-      "macro_f1": 0.5891660461653015,
-      "weighted_f1": 0.8923792602640755,
+      "accuracy": 1.0,
+      "correct": 101,
+      "macro_f1": 0.75,
+      "weighted_f1": 1.0,
       "binary_precision": 1.0,
       "binary_recall": 1.0,
       "binary_f1": 1.0,
@@ -709,15 +709,15 @@
         },
         "WARN": {
           "precision": 1.0,
-          "recall": 0.3076923076923077,
-          "f1": 0.47058823529411764,
-          "support": 13
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 7
         },
         "BLOCK": {
-          "precision": 0.7954545454545454,
+          "precision": 1.0,
           "recall": 1.0,
-          "f1": 0.8860759493670886,
-          "support": 35
+          "f1": 1.0,
+          "support": 41
         },
         "ERROR": {
           "precision": 0.0,
@@ -735,14 +735,14 @@
         },
         "WARN": {
           "ALLOW": 0,
-          "WARN": 4,
-          "BLOCK": 9,
+          "WARN": 7,
+          "BLOCK": 0,
           "ERROR": 0
         },
         "BLOCK": {
           "ALLOW": 0,
           "WARN": 0,
-          "BLOCK": 35,
+          "BLOCK": 41,
           "ERROR": 0
         },
         "ERROR": {
@@ -763,10 +763,10 @@
         "layer5"
       ],
       "dataset_size": 101,
-      "accuracy": 0.9108910891089109,
-      "correct": 92,
-      "macro_f1": 0.5891660461653015,
-      "weighted_f1": 0.8923792602640755,
+      "accuracy": 1.0,
+      "correct": 101,
+      "macro_f1": 0.75,
+      "weighted_f1": 1.0,
       "binary_precision": 1.0,
       "binary_recall": 1.0,
       "binary_f1": 1.0,
@@ -780,15 +780,15 @@
         },
         "WARN": {
           "precision": 1.0,
-          "recall": 0.3076923076923077,
-          "f1": 0.47058823529411764,
-          "support": 13
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 7
         },
         "BLOCK": {
-          "precision": 0.7954545454545454,
+          "precision": 1.0,
           "recall": 1.0,
-          "f1": 0.8860759493670886,
-          "support": 35
+          "f1": 1.0,
+          "support": 41
         },
         "ERROR": {
           "precision": 0.0,
@@ -806,14 +806,14 @@
         },
         "WARN": {
           "ALLOW": 0,
-          "WARN": 4,
-          "BLOCK": 9,
+          "WARN": 7,
+          "BLOCK": 0,
           "ERROR": 0
         },
         "BLOCK": {
           "ALLOW": 0,
           "WARN": 0,
-          "BLOCK": 35,
+          "BLOCK": 41,
           "ERROR": 0
         },
         "ERROR": {

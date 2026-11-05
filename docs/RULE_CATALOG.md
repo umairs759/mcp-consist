@@ -10,6 +10,8 @@
 - **R-201** (HIGH/MEDIUM): required args missing; unknown args when additionalProperties=false; type mismatches; enum violations.
 - **R-202** (MEDIUM): undeclared side-channel params (notes, context, metadata, sidenote, ...) not declared in schema.
 
+## Rule count: 11 (R-101, R-102, R-201, R-202, R-301, R-302, R-303, R-304, R-401, R-402, R-501).
+
 ## Layer 4 — Capability Policy Compliance
 - **R-301** (HIGH): path outside allowed roots; traversal indicators.
 - **R-302** (HIGH/MEDIUM): host/URL/email not allow-listed; misleading suffixes.

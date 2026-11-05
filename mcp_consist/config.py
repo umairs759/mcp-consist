@@ -79,6 +79,7 @@ RULES = {
     "R-301": "layer4",
     "R-302": "layer4",
     "R-303": "layer4",
+    "R-304": "layer4",
     # Layer 5 — Joint Intent and Tool-Call Integrity
     "R-401": "layer5",
     "R-402": "layer5",
