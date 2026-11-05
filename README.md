@@ -1,49 +1,95 @@
 # MCP-CONSIST — Context-Consistency Enforcement for MCP Tool-Poisoning Detection
 
-A deterministic, rule-based cybersecurity research prototype for detecting
-inconsistencies across five joint context inputs of an MCP-style tool call:
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white" alt="Python 3.11+" />
+  <img src="https://img.shields.io/badge/Gradio-5.50.0-FF7C00?logo=gradio&logoColor=white" alt="Gradio 5.50.0" />
+  <img src="https://img.shields.io/badge/Tests-134%20passed-34D399" alt="134 tests passed" />
+  <img src="https://img.shields.io/badge/Detection%20Rules-11-4E80EE" alt="11 detection rules" />
+  <img src="https://img.shields.io/badge/Detection%20Layers-5-E5A93C" alt="5 detection layers" />
+  <img src="https://img.shields.io/badge/Status-Research%20Prototype-8B95A1" alt="Research prototype" />
+  <a href="https://github.com/umairs759/mcp-consist/stargazers"><img src="https://img.shields.io/github/stars/umairs759/mcp-consist?style=social" alt="GitHub stars" /></a>
+</p>
 
-1. Tool description
-2. Tool input schema
-3. Capability policy
-4. User task
-5. Proposed tool call
+<p align="center">
+  <strong>A deterministic, explainable, five-layer research prototype for detecting contextual inconsistencies in MCP-style tool calls.</strong>
+</p>
 
-The current implementation is **not** machine learning, does **not** connect to
-real MCP servers, and is **not** a production security boundary. It is an
-explainable, reproducible research prototype intended for university research
-demonstration and methodological exploration.
+<p align="center">
+  <a href="#research-overview"><img src="https://img.shields.io/badge/Research-Overview-11151B?style=flat-square" alt="Research Overview" /></a>
+  <a href="#architecture"><img src="https://img.shields.io/badge/Architecture-Design-11151B?style=flat-square" alt="Architecture" /></a>
+  <a href="#detection-layers"><img src="https://img.shields.io/badge/Detection-Layers-11151B?style=flat-square" alt="Detection Layers" /></a>
+  <a href="#interface"><img src="https://img.shields.io/badge/User-Interface-11151B?style=flat-square" alt="User Interface" /></a>
+  <a href="#evaluation"><img src="https://img.shields.io/badge/Evaluation-Results-11151B?style=flat-square" alt="Evaluation" /></a>
+  <a href="#installation"><img src="https://img.shields.io/badge/Quick-Start-11151B?style=flat-square" alt="Quick Start" /></a>
+  <a href="#documentation"><img src="https://img.shields.io/badge/Project-Documentation-11151B?style=flat-square" alt="Documentation" /></a>
+  <a href="#limitations"><img src="https://img.shields.io/badge/Known-Limitations-11151B?style=flat-square" alt="Limitations" /></a>
+</p>
 
-## Overview
+---
 
-MCP-CONSIST analyzes five contextual inputs jointly instead of relying on any
-single field. A tool may have a benign description while its proposed call
-targets a sensitive resource, violates a capability policy, or conflicts with
-the user's task. Joint analysis is required to surface these inconsistencies.
+## Table of Contents
 
-The system implements a five-layer deterministic rule engine
-(`policy-rules-v1`) with 11 rules, centralized severity penalties, and a
-documented verdict policy. It emits one of four verdicts — `ALLOW`, `WARN`,
-`BLOCK`, or `ERROR` — together with a score, a five-layer matrix, findings,
-rule IDs, redacted evidence, and a decision trace.
+- [Research Overview](#research-overview)
+- [Problem and Motivation](#problem-and-motivation)
+- [Five Joint Context Inputs](#five-joint-context-inputs)
+- [Architecture](#architecture)
+- [Detection Layers and Rule Catalog](#detection-layers-and-rule-catalog)
+- [Main Features](#main-features)
+- [Interface](#interface)
+- [Technology Stack](#technology-stack)
+- [Installation](#installation)
+- [Running the Application](#running-the-application)
+- [Example Analysis](#example-analysis)
+- [Evaluation Methodology](#evaluation-methodology)
+- [Verified Evaluation Results](#verified-evaluation-results)
+- [Evaluation Interpretation](#evaluation-interpretation)
+- [Security and Privacy](#security-and-privacy)
+- [Limitations](#limitations)
+- [Future Research](#future-research)
+- [Testing and Reproducibility](#testing-and-reproducibility)
+- [Repository Structure](#repository-structure)
+- [Project Status](#project-status)
+- [Documentation](#documentation)
+- [License and Acknowledgements](#license-and-acknowledgements)
+- [Release and Distribution](#release-and-distribution)
 
-The project also preserves an original Stage 1 lexical consistency prototype
-(`pipeline.py`) as an independent baseline workspace in the Gradio interface.
+---
 
-## Research Problem and Motivation
+## Research Overview
 
-MCP tool poisoning can embed malicious intent in any one of the contextual
-fields surrounding a tool call. Checking only the tool description is
+MCP-CONSIST is a deterministic, rule-based cybersecurity research prototype for
+detecting contextual inconsistencies in MCP-style tool calls. It jointly
+analyzes five contextual inputs and emits an explainable verdict together with
+a score, findings, and a decision trace.
+
+The current implementation:
+
+- Uses **no machine learning**.
+- Performs **no real MCP server interception**.
+- Is **not** a production security boundary.
+- Is designed for research, explainability, and reproducible evaluation.
+
+🔐 The system prioritizes correctness, transparency, and honest reporting over
+impressive but unsupported performance claims.
+
+---
+
+## Problem and Motivation
+
+MCP tool poisoning can embed malicious or inconsistent intent in any one of the
+contextual fields surrounding a tool call. Checking only the tool description is
 insufficient because a malicious or inconsistent call may still carry a
-benign-looking description. Similarly, checking only the proposed call ignores
-the advertised tool purpose and the user's intent.
+benign-looking description. Checking only the proposed call ignores the
+advertised tool purpose and the user's intent.
 
 MCP-CONSIST addresses this by evaluating description, schema, policy, task, and
-call together using deterministic, auditable rules. The research objective is
-to demonstrate explainable joint-context consistency detection with reproducible
+call together using deterministic, auditable rules. The research objective is to
+demonstrate explainable joint-context consistency detection with reproducible
 evaluation, not to claim real-world detection effectiveness.
 
-## Core Concept: Five Joint Context Inputs
+---
+
+## Five Joint Context Inputs
 
 | Input | Purpose | Security relevance |
 |---|---|---|
@@ -56,18 +102,42 @@ evaluation, not to claim real-world detection effectiveness.
 These inputs are jointly analyzed to produce a verdict, score, layer matrix,
 findings, and trace.
 
-## Architecture and Processing Pipeline
+### Joint Input Flow
 
 ```mermaid
 flowchart LR
-    A[analyze(ctx, threshold)] --> B[validate_context]
-    B --> C[safe JSON parsing]
-    C --> D[layer applicability]
-    D --> E[run_all_rules]
-    E --> F[layer scoring]
-    F --> G[overall weighted score]
-    G --> H[verdict policy]
-    H --> I[AnalysisResult dict]
+    D[Tool Description] --> E[Joint-Context Analysis Engine]
+    S[Tool Input Schema] --> E
+    P[Capability Policy] --> E
+    T[User Task] --> E
+    C[Proposed Tool Call] --> E
+    E --> L1[Layer 1: Description Integrity]
+    E --> L2[Layer 2: Sensitive Resource Protection]
+    E --> L3[Layer 3: Schema and Parameter Integrity]
+    E --> L4[Layer 4: Capability Policy Compliance]
+    E --> L5[Layer 5: Joint Intent and Tool-Call Integrity]
+    L1 --> V[Verdict: ALLOW / WARN / BLOCK / ERROR]
+    L2 --> V
+    L3 --> V
+    L4 --> V
+    L5 --> V
+    V --> O[Score · Findings · Evidence · Decision Trace]
+```
+
+---
+
+## Architecture
+
+```mermaid
+flowchart LR
+    A[analyze(ctx, threshold)] --> B[Input Validation]
+    B --> C[Safe JSON Parsing]
+    C --> D[Layer Applicability]
+    D --> E[Rule Execution]
+    E --> F[Layer Scoring]
+    F --> G[Overall Weighted Score]
+    G --> H[Verdict Policy]
+    H --> I[Explainable Analysis Result]
 ```
 
 Execution sequence:
@@ -84,7 +154,23 @@ Execution sequence:
 
 N/A layers have a `null` score and are excluded from scoring.
 
-## Five Detection Layers and Rule Catalog
+### Internal Pipeline
+
+```mermaid
+flowchart TD
+    A[Input Validation] --> B[Normalization]
+    B --> C[Safe Parsing]
+    C --> D[Layer Applicability]
+    D --> E[Rule Execution]
+    E --> F[Layer Scoring]
+    F --> G[Overall Scoring]
+    G --> H[Verdict Policy]
+    H --> I[Explainable Analysis Result]
+```
+
+---
+
+## Detection Layers and Rule Catalog
 
 The final implementation contains **11 detection rules** across five layers.
 
@@ -113,6 +199,27 @@ Verdict policy order:
 6. Policy coverage gap -> `WARN`.
 7. Otherwise threshold-gated `ALLOW` / `WARN`.
 
+### Decision Flow
+
+```mermaid
+flowchart TD
+    A[Validated Inputs] --> B{CRITICAL finding?}
+    B -- Yes --> C[BLOCK]
+    B -- No --> D{HIGH finding?}
+    D -- Yes --> C
+    D -- No --> E{Applicable layer scored 0.0?}
+    E -- Yes --> C
+    E -- No --> F{MEDIUM-only findings?}
+    F -- Yes --> G[WARN]
+    F -- No --> H{Policy coverage gap?}
+    H -- Yes --> G
+    H -- No --> I{Score >= threshold?}
+    I -- Yes --> J[ALLOW]
+    I -- No --> G
+```
+
+---
+
 ## Main Features
 
 Verified against the current source:
@@ -137,7 +244,9 @@ Verified against the current source:
 - Joint Context research workspace.
 - In-memory session history (not persisted).
 
-## User Interface and Demonstration
+---
+
+## Interface
 
 The Gradio workbench provides two workflows:
 
@@ -159,10 +268,13 @@ Joint Context workflow:
 11. Download the JSON or Markdown report.
 12. Review the in-memory session history.
 
-Genuine screenshots are available at `dist/screenshots/final_desktop.png`. Tablet and
-mobile screenshots were not captured because the browser tool used for
-verification has a fixed viewport; responsive layout was checked through overflow
-and CSS inspection.
+### Application Screenshot
+
+![MCP-CONSIST Gradio workbench](dist/screenshots/final_desktop.png)
+
+*Genuine application screenshot captured from the running Gradio interface.*
+
+---
 
 ## Technology Stack
 
@@ -175,6 +287,8 @@ and CSS inspection.
 No machine learning frameworks are used. The evaluation scripts use only the
 standard library plus the project's own modules.
 
+---
+
 ## Installation
 
 ```bash
@@ -182,6 +296,8 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+---
 
 ## Running the Application
 
@@ -202,6 +318,8 @@ Environment variables (verified against `demo/app.py`):
 The application defaults to localhost and does not create a public tunnel unless
 explicitly enabled.
 
+---
+
 ## Example Analysis
 
 The following example is illustrative; output values are not fabricated engine
@@ -218,6 +336,8 @@ Inputs:
 Expected engine behavior: all layers pass, no findings, verdict `ALLOW`, score
 `1.0`. `ALLOW` is not proof that the content is safe.
 
+---
+
 ## Evaluation Methodology
 
 Four evaluation activities are performed:
@@ -233,6 +353,8 @@ real-world datasets, external benchmarks, or independently collected data.
 
 Dataset provenance is explicitly recorded in the JSON results. Synthetic
 author-authored holdout data is not external validation.
+
+---
 
 ## Verified Evaluation Results
 
@@ -314,6 +436,8 @@ Some configurations (for example, all layers disabled) predict `WARN` for every
 case, which produces a high benign false-positive rate. This is documented
 rather than hidden.
 
+---
+
 ## Evaluation Interpretation
 
 - **Multiclass classification** evaluates the exact verdict (`ALLOW`, `WARN`,
@@ -330,6 +454,8 @@ rather than hidden.
 The absence of `ERROR` examples prevents meaningful evaluation of that class.
 Strong scores on small synthetic author-authored datasets do not establish
 real-world security effectiveness.
+
+---
 
 ## Security and Privacy
 
@@ -355,6 +481,8 @@ risks, and deployment risks are documented in `docs/THREAT_MODEL.md`.
 No penetration test or formal security audit has been performed. This is a
 source-level self-assessment.
 
+---
+
 ## Limitations
 
 Documented in `docs/LIMITATIONS.md` and related docs. Key limitations:
@@ -371,6 +499,10 @@ Documented in `docs/LIMITATIONS.md` and related docs. Key limitations:
 - Docker support is documented but unverified (Docker unavailable in the
   development environment).
 - No public deployment performed.
+- Tablet and mobile screenshots were not captured; responsive layout was checked
+  through overflow and CSS inspection.
+
+---
 
 ## Future Research
 
@@ -384,6 +516,8 @@ Documented in `docs/LIMITATIONS.md` and related docs. Key limitations:
 - Expanded independent testing.
 
 These are future directions, not implemented features.
+
+---
 
 ## Testing and Reproducibility
 
@@ -403,6 +537,8 @@ Current verified test count: 134 passed.
 
 Reproducibility metadata (dataset SHA-256, engine version, source revision,
 config hash) is recorded in the result JSON files.
+
+---
 
 ## Repository Structure
 
@@ -452,6 +588,8 @@ mcp-consist-main/
 Virtual environments, Python caches, temporary artifacts, and the release ZIP are
 excluded from the repository structure documentation.
 
+---
+
 ## Project Status
 
 | Area | Status |
@@ -471,6 +609,8 @@ excluded from the repository structure documentation.
 | External benchmark validation | Not performed |
 | Production deployment | Not performed |
 
+---
+
 ## Documentation
 
 - `docs/ENGINE_ARCHITECTURE.md`
@@ -483,11 +623,15 @@ excluded from the repository structure documentation.
 - `docs/SUPERVISOR_DEMO_GUIDE.md`
 - `docs/PROJECT_PRESENTATION.md`
 
+---
+
 ## License and Acknowledgements
 
 No `LICENSE` file is present in the repository. No license or usage permissions
 are claimed by this README. Acknowledgements are limited to the project's own
 documented implementation; no external contributors or grants are recorded.
+
+---
 
 ## Release and Distribution
 
