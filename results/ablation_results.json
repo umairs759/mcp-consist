@@ -1,0 +1,829 @@
+{
+  "generated_at_utc": "2026-11-05T19:59:55Z",
+  "engine": "policy-rules-v1",
+  "engine_version": "1.0.0",
+  "source_revision": "57a8030b1a64bab64547d22c86251dec6c568769",
+  "dataset_path": "/home/kali/Desktop/mcp-consist-main/data/eval_cases.jsonl",
+  "dataset_sha256": "a47b57d2f6c3b0055649a6d6926ff4b4c5af0a7e2eeb3a5ffa2b289598634dd4",
+  "dataset_provenance": "synthetic, authored by project author",
+  "config_hash": "91a9e4e01410c8b02e301e8e45ee65d2a4b3517fd79d6d3309dd9a2fa952575b",
+  "evaluation_method": "Each configuration executed through mcp_consist.analyze(enabled_layers=...). Layers not in enabled_layers are genuinely disabled (N/A, no rules run).",
+  "configurations": [
+    {
+      "enabled_layers": [],
+      "dataset_size": 101,
+      "accuracy": 0.12871287128712872,
+      "correct": 13,
+      "macro_f1": 0.05701754385964912,
+      "weighted_f1": 0.029355567135660933,
+      "binary_precision": 0.4752475247524752,
+      "binary_recall": 1.0,
+      "binary_f1": 0.6442953020134228,
+      "benign_false_positive_rate": 1.0,
+      "per_class": {
+        "ALLOW": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 53
+        },
+        "WARN": {
+          "precision": 0.12871287128712872,
+          "recall": 1.0,
+          "f1": 0.22807017543859648,
+          "support": 13
+        },
+        "BLOCK": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 35
+        },
+        "ERROR": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "ALLOW": {
+          "ALLOW": 0,
+          "WARN": 53,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "WARN": {
+          "ALLOW": 0,
+          "WARN": 13,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "BLOCK": {
+          "ALLOW": 0,
+          "WARN": 35,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "ERROR": {
+          "ALLOW": 0,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        }
+      },
+      "label": "none (all layers disabled)"
+    },
+    {
+      "enabled_layers": [
+        "layer1"
+      ],
+      "dataset_size": 101,
+      "accuracy": 0.5643564356435643,
+      "correct": 57,
+      "macro_f1": 0.22794871794871796,
+      "weighted_f1": 0.44190911398832194,
+      "binary_precision": 1.0,
+      "binary_recall": 0.08333333333333333,
+      "binary_f1": 0.15384615384615385,
+      "benign_false_positive_rate": 0.0,
+      "per_class": {
+        "ALLOW": {
+          "precision": 0.5463917525773195,
+          "recall": 1.0,
+          "f1": 0.7066666666666667,
+          "support": 53
+        },
+        "WARN": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 13
+        },
+        "BLOCK": {
+          "precision": 1.0,
+          "recall": 0.11428571428571428,
+          "f1": 0.20512820512820512,
+          "support": 35
+        },
+        "ERROR": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "ALLOW": {
+          "ALLOW": 53,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "WARN": {
+          "ALLOW": 13,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "BLOCK": {
+          "ALLOW": 31,
+          "WARN": 0,
+          "BLOCK": 4,
+          "ERROR": 0
+        },
+        "ERROR": {
+          "ALLOW": 0,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        }
+      },
+      "label": "layer1 only"
+    },
+    {
+      "enabled_layers": [
+        "layer2"
+      ],
+      "dataset_size": 101,
+      "accuracy": 0.6336633663366337,
+      "correct": 64,
+      "macro_f1": 0.3566555277081593,
+      "weighted_f1": 0.5718724754680982,
+      "binary_precision": 1.0,
+      "binary_recall": 0.4375,
+      "binary_f1": 0.6086956521739131,
+      "benign_false_positive_rate": 0.0,
+      "per_class": {
+        "ALLOW": {
+          "precision": 0.6625,
+          "recall": 1.0,
+          "f1": 0.7969924812030075,
+          "support": 53
+        },
+        "WARN": {
+          "precision": 0.2857142857142857,
+          "recall": 0.3076923076923077,
+          "f1": 0.29629629629629634,
+          "support": 13
+        },
+        "BLOCK": {
+          "precision": 1.0,
+          "recall": 0.2,
+          "f1": 0.33333333333333337,
+          "support": 35
+        },
+        "ERROR": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "ALLOW": {
+          "ALLOW": 53,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "WARN": {
+          "ALLOW": 9,
+          "WARN": 4,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "BLOCK": {
+          "ALLOW": 18,
+          "WARN": 10,
+          "BLOCK": 7,
+          "ERROR": 0
+        },
+        "ERROR": {
+          "ALLOW": 0,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        }
+      },
+      "label": "layer2 only"
+    },
+    {
+      "enabled_layers": [
+        "layer3"
+      ],
+      "dataset_size": 101,
+      "accuracy": 0.6732673267326733,
+      "correct": 68,
+      "macro_f1": 0.3614718614718615,
+      "weighted_f1": 0.613047018987613,
+      "binary_precision": 1.0,
+      "binary_recall": 0.4583333333333333,
+      "binary_f1": 0.6285714285714286,
+      "benign_false_positive_rate": 0.0,
+      "per_class": {
+        "ALLOW": {
+          "precision": 0.6708860759493671,
+          "recall": 1.0,
+          "f1": 0.8030303030303031,
+          "support": 53
+        },
+        "WARN": {
+          "precision": 1.0,
+          "recall": 0.07692307692307693,
+          "f1": 0.14285714285714288,
+          "support": 13
+        },
+        "BLOCK": {
+          "precision": 0.6666666666666666,
+          "recall": 0.4,
+          "f1": 0.5,
+          "support": 35
+        },
+        "ERROR": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "ALLOW": {
+          "ALLOW": 53,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "WARN": {
+          "ALLOW": 5,
+          "WARN": 1,
+          "BLOCK": 7,
+          "ERROR": 0
+        },
+        "BLOCK": {
+          "ALLOW": 21,
+          "WARN": 0,
+          "BLOCK": 14,
+          "ERROR": 0
+        },
+        "ERROR": {
+          "ALLOW": 0,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        }
+      },
+      "label": "layer3 only"
+    },
+    {
+      "enabled_layers": [
+        "layer4"
+      ],
+      "dataset_size": 101,
+      "accuracy": 0.8118811881188119,
+      "correct": 82,
+      "macro_f1": 0.4613019120691755,
+      "weighted_f1": 0.7670596434871838,
+      "binary_precision": 1.0,
+      "binary_recall": 0.7291666666666666,
+      "binary_f1": 0.8433734939759037,
+      "benign_false_positive_rate": 0.0,
+      "per_class": {
+        "ALLOW": {
+          "precision": 0.803030303030303,
+          "recall": 1.0,
+          "f1": 0.8907563025210083,
+          "support": 53
+        },
+        "WARN": {
+          "precision": 1.0,
+          "recall": 0.07692307692307693,
+          "f1": 0.14285714285714288,
+          "support": 13
+        },
+        "BLOCK": {
+          "precision": 0.8235294117647058,
+          "recall": 0.8,
+          "f1": 0.8115942028985507,
+          "support": 35
+        },
+        "ERROR": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "ALLOW": {
+          "ALLOW": 53,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "WARN": {
+          "ALLOW": 6,
+          "WARN": 1,
+          "BLOCK": 6,
+          "ERROR": 0
+        },
+        "BLOCK": {
+          "ALLOW": 7,
+          "WARN": 0,
+          "BLOCK": 28,
+          "ERROR": 0
+        },
+        "ERROR": {
+          "ALLOW": 0,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        }
+      },
+      "label": "layer4 only"
+    },
+    {
+      "enabled_layers": [
+        "layer5"
+      ],
+      "dataset_size": 101,
+      "accuracy": 0.594059405940594,
+      "correct": 60,
+      "macro_f1": 0.3347856477166822,
+      "weighted_f1": 0.4854317957424819,
+      "binary_precision": 1.0,
+      "binary_recall": 0.1875,
+      "binary_f1": 0.3157894736842105,
+      "benign_false_positive_rate": 0.0,
+      "per_class": {
+        "ALLOW": {
+          "precision": 0.5760869565217391,
+          "recall": 1.0,
+          "f1": 0.7310344827586206,
+          "support": 53
+        },
+        "WARN": {
+          "precision": 0.7142857142857143,
+          "recall": 0.38461538461538464,
+          "f1": 0.5,
+          "support": 13
+        },
+        "BLOCK": {
+          "precision": 1.0,
+          "recall": 0.05714285714285714,
+          "f1": 0.1081081081081081,
+          "support": 35
+        },
+        "ERROR": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "ALLOW": {
+          "ALLOW": 53,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "WARN": {
+          "ALLOW": 8,
+          "WARN": 5,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "BLOCK": {
+          "ALLOW": 31,
+          "WARN": 2,
+          "BLOCK": 2,
+          "ERROR": 0
+        },
+        "ERROR": {
+          "ALLOW": 0,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        }
+      },
+      "label": "layer5 only"
+    },
+    {
+      "enabled_layers": [
+        "layer1"
+      ],
+      "dataset_size": 101,
+      "accuracy": 0.5643564356435643,
+      "correct": 57,
+      "macro_f1": 0.22794871794871796,
+      "weighted_f1": 0.44190911398832194,
+      "binary_precision": 1.0,
+      "binary_recall": 0.08333333333333333,
+      "binary_f1": 0.15384615384615385,
+      "benign_false_positive_rate": 0.0,
+      "per_class": {
+        "ALLOW": {
+          "precision": 0.5463917525773195,
+          "recall": 1.0,
+          "f1": 0.7066666666666667,
+          "support": 53
+        },
+        "WARN": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 13
+        },
+        "BLOCK": {
+          "precision": 1.0,
+          "recall": 0.11428571428571428,
+          "f1": 0.20512820512820512,
+          "support": 35
+        },
+        "ERROR": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "ALLOW": {
+          "ALLOW": 53,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "WARN": {
+          "ALLOW": 13,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "BLOCK": {
+          "ALLOW": 31,
+          "WARN": 0,
+          "BLOCK": 4,
+          "ERROR": 0
+        },
+        "ERROR": {
+          "ALLOW": 0,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        }
+      },
+      "label": "progressive: layer1"
+    },
+    {
+      "enabled_layers": [
+        "layer1",
+        "layer2"
+      ],
+      "dataset_size": 101,
+      "accuracy": 0.6732673267326733,
+      "correct": 68,
+      "macro_f1": 0.40033444816053515,
+      "weighted_f1": 0.6332130202986854,
+      "binary_precision": 1.0,
+      "binary_recall": 0.5,
+      "binary_f1": 0.6666666666666666,
+      "benign_false_positive_rate": 0.0,
+      "per_class": {
+        "ALLOW": {
+          "precision": 0.6883116883116883,
+          "recall": 1.0,
+          "f1": 0.8153846153846155,
+          "support": 53
+        },
+        "WARN": {
+          "precision": 0.3076923076923077,
+          "recall": 0.3076923076923077,
+          "f1": 0.3076923076923077,
+          "support": 13
+        },
+        "BLOCK": {
+          "precision": 1.0,
+          "recall": 0.3142857142857143,
+          "f1": 0.4782608695652174,
+          "support": 35
+        },
+        "ERROR": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "ALLOW": {
+          "ALLOW": 53,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "WARN": {
+          "ALLOW": 9,
+          "WARN": 4,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "BLOCK": {
+          "ALLOW": 15,
+          "WARN": 9,
+          "BLOCK": 11,
+          "ERROR": 0
+        },
+        "ERROR": {
+          "ALLOW": 0,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        }
+      },
+      "label": "progressive: layer1+layer2"
+    },
+    {
+      "enabled_layers": [
+        "layer1",
+        "layer2",
+        "layer3"
+      ],
+      "dataset_size": 101,
+      "accuracy": 0.7722772277227723,
+      "correct": 78,
+      "macro_f1": 0.43417223078240025,
+      "weighted_f1": 0.7377144494110428,
+      "binary_precision": 1.0,
+      "binary_recall": 0.75,
+      "binary_f1": 0.8571428571428571,
+      "benign_false_positive_rate": 0.0,
+      "per_class": {
+        "ALLOW": {
+          "precision": 0.8153846153846154,
+          "recall": 1.0,
+          "f1": 0.8983050847457628,
+          "support": 53
+        },
+        "WARN": {
+          "precision": 0.2,
+          "recall": 0.07692307692307693,
+          "f1": 0.1111111111111111,
+          "support": 13
+        },
+        "BLOCK": {
+          "precision": 0.7741935483870968,
+          "recall": 0.6857142857142857,
+          "f1": 0.7272727272727272,
+          "support": 35
+        },
+        "ERROR": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "ALLOW": {
+          "ALLOW": 53,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "WARN": {
+          "ALLOW": 5,
+          "WARN": 1,
+          "BLOCK": 7,
+          "ERROR": 0
+        },
+        "BLOCK": {
+          "ALLOW": 7,
+          "WARN": 4,
+          "BLOCK": 24,
+          "ERROR": 0
+        },
+        "ERROR": {
+          "ALLOW": 0,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        }
+      },
+      "label": "progressive: layer1+layer2+layer3"
+    },
+    {
+      "enabled_layers": [
+        "layer1",
+        "layer2",
+        "layer3",
+        "layer4"
+      ],
+      "dataset_size": 101,
+      "accuracy": 0.8910891089108911,
+      "correct": 90,
+      "macro_f1": 0.5335560243788092,
+      "weighted_f1": 0.8564142912181513,
+      "binary_precision": 1.0,
+      "binary_recall": 0.9583333333333334,
+      "binary_f1": 0.9787234042553191,
+      "benign_false_positive_rate": 0.0,
+      "per_class": {
+        "ALLOW": {
+          "precision": 0.9636363636363636,
+          "recall": 1.0,
+          "f1": 0.9814814814814815,
+          "support": 53
+        },
+        "WARN": {
+          "precision": 1.0,
+          "recall": 0.15384615384615385,
+          "f1": 0.2666666666666667,
+          "support": 13
+        },
+        "BLOCK": {
+          "precision": 0.7954545454545454,
+          "recall": 1.0,
+          "f1": 0.8860759493670886,
+          "support": 35
+        },
+        "ERROR": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "ALLOW": {
+          "ALLOW": 53,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "WARN": {
+          "ALLOW": 2,
+          "WARN": 2,
+          "BLOCK": 9,
+          "ERROR": 0
+        },
+        "BLOCK": {
+          "ALLOW": 0,
+          "WARN": 0,
+          "BLOCK": 35,
+          "ERROR": 0
+        },
+        "ERROR": {
+          "ALLOW": 0,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        }
+      },
+      "label": "progressive: layer1+layer2+layer3+layer4"
+    },
+    {
+      "enabled_layers": [
+        "layer1",
+        "layer2",
+        "layer3",
+        "layer4",
+        "layer5"
+      ],
+      "dataset_size": 101,
+      "accuracy": 0.9108910891089109,
+      "correct": 92,
+      "macro_f1": 0.5891660461653015,
+      "weighted_f1": 0.8923792602640755,
+      "binary_precision": 1.0,
+      "binary_recall": 1.0,
+      "binary_f1": 1.0,
+      "benign_false_positive_rate": 0.0,
+      "per_class": {
+        "ALLOW": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 53
+        },
+        "WARN": {
+          "precision": 1.0,
+          "recall": 0.3076923076923077,
+          "f1": 0.47058823529411764,
+          "support": 13
+        },
+        "BLOCK": {
+          "precision": 0.7954545454545454,
+          "recall": 1.0,
+          "f1": 0.8860759493670886,
+          "support": 35
+        },
+        "ERROR": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "ALLOW": {
+          "ALLOW": 53,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "WARN": {
+          "ALLOW": 0,
+          "WARN": 4,
+          "BLOCK": 9,
+          "ERROR": 0
+        },
+        "BLOCK": {
+          "ALLOW": 0,
+          "WARN": 0,
+          "BLOCK": 35,
+          "ERROR": 0
+        },
+        "ERROR": {
+          "ALLOW": 0,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        }
+      },
+      "label": "progressive: layer1+layer2+layer3+layer4+layer5"
+    },
+    {
+      "enabled_layers": [
+        "layer1",
+        "layer2",
+        "layer3",
+        "layer4",
+        "layer5"
+      ],
+      "dataset_size": 101,
+      "accuracy": 0.9108910891089109,
+      "correct": 92,
+      "macro_f1": 0.5891660461653015,
+      "weighted_f1": 0.8923792602640755,
+      "binary_precision": 1.0,
+      "binary_recall": 1.0,
+      "binary_f1": 1.0,
+      "benign_false_positive_rate": 0.0,
+      "per_class": {
+        "ALLOW": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 53
+        },
+        "WARN": {
+          "precision": 1.0,
+          "recall": 0.3076923076923077,
+          "f1": 0.47058823529411764,
+          "support": 13
+        },
+        "BLOCK": {
+          "precision": 0.7954545454545454,
+          "recall": 1.0,
+          "f1": 0.8860759493670886,
+          "support": 35
+        },
+        "ERROR": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0
+        }
+      },
+      "confusion_matrix": {
+        "ALLOW": {
+          "ALLOW": 53,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        },
+        "WARN": {
+          "ALLOW": 0,
+          "WARN": 4,
+          "BLOCK": 9,
+          "ERROR": 0
+        },
+        "BLOCK": {
+          "ALLOW": 0,
+          "WARN": 0,
+          "BLOCK": 35,
+          "ERROR": 0
+        },
+        "ERROR": {
+          "ALLOW": 0,
+          "WARN": 0,
+          "BLOCK": 0,
+          "ERROR": 0
+        }
+      },
+      "label": "full (all five layers)"
+    }
+  ]
+}

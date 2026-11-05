@@ -1,0 +1,1159 @@
+{
+  "generated_at_utc": "2026-11-05T20:00:04Z",
+  "engine": "policy-rules-v1",
+  "engine_version": "1.0.0",
+  "source_revision": "57a8030b1a64bab64547d22c86251dec6c568769",
+  "config_hash": "91a9e4e01410c8b02e301e8e45ee65d2a4b3517fd79d6d3309dd9a2fa952575b",
+  "dataset_path": "/home/kali/Desktop/mcp-consist-main/data/eval_cases.jsonl",
+  "dataset_sha256": "a47b57d2f6c3b0055649a6d6926ff4b4c5af0a7e2eeb3a5ffa2b289598634dd4",
+  "dataset_provenance": "synthetic, authored by project author",
+  "evaluation_method": "Each JSONL case executed through mcp_consist.analyze(); predicted verdict compared to expected_verdict. No hardcoded results.",
+  "dataset_size": 101,
+  "dev_size": 54,
+  "holdout_size": 47,
+  "accuracy": 0.9108910891089109,
+  "correct": 92,
+  "precision": 1.0,
+  "recall": 1.0,
+  "f1": 1.0,
+  "macro_f1": 0.5891660461653015,
+  "weighted_f1": 0.8923792602640755,
+  "per_class": {
+    "ALLOW": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 53
+    },
+    "WARN": {
+      "precision": 1.0,
+      "recall": 0.3076923076923077,
+      "f1": 0.47058823529411764,
+      "support": 13
+    },
+    "BLOCK": {
+      "precision": 0.7954545454545454,
+      "recall": 1.0,
+      "f1": 0.8860759493670886,
+      "support": 35
+    },
+    "ERROR": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 0
+    }
+  },
+  "per_family_recall": {
+    "benign": {
+      "recall": 1.0,
+      "correct": 53,
+      "total": 53
+    },
+    "cross_tool_pivot": {
+      "recall": 1.0,
+      "correct": 3,
+      "total": 3
+    },
+    "description_call_mismatch": {
+      "recall": 0.0,
+      "correct": 0,
+      "total": 3
+    },
+    "disallowed_action": {
+      "recall": 1.0,
+      "correct": 4,
+      "total": 4
+    },
+    "disallowed_host": {
+      "recall": 1.0,
+      "correct": 5,
+      "total": 5
+    },
+    "hidden_instruction": {
+      "recall": 1.0,
+      "correct": 4,
+      "total": 4
+    },
+    "path_traversal": {
+      "recall": 1.0,
+      "correct": 8,
+      "total": 8
+    },
+    "policy_coverage_gap": {
+      "recall": 0.5,
+      "correct": 1,
+      "total": 2
+    },
+    "schema_violation": {
+      "recall": 1.0,
+      "correct": 5,
+      "total": 5
+    },
+    "sensitive_resource": {
+      "recall": 1.0,
+      "correct": 7,
+      "total": 7
+    },
+    "side_channel": {
+      "recall": 0.0,
+      "correct": 0,
+      "total": 4
+    },
+    "task_call_mismatch": {
+      "recall": 0.6666666666666666,
+      "correct": 2,
+      "total": 3
+    }
+  },
+  "binary_malicious": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp": 48,
+    "fp": 0,
+    "fn": 0,
+    "tn": 53
+  },
+  "benign_false_positive_rate": 0.0,
+  "confusion_matrix": {
+    "ALLOW": {
+      "ALLOW": 53,
+      "WARN": 0,
+      "BLOCK": 0,
+      "ERROR": 0
+    },
+    "WARN": {
+      "ALLOW": 0,
+      "WARN": 4,
+      "BLOCK": 9,
+      "ERROR": 0
+    },
+    "BLOCK": {
+      "ALLOW": 0,
+      "WARN": 0,
+      "BLOCK": 35,
+      "ERROR": 0
+    },
+    "ERROR": {
+      "ALLOW": 0,
+      "WARN": 0,
+      "BLOCK": 0,
+      "ERROR": 0
+    }
+  },
+  "latency_p50_ms": 0.1821139995008707,
+  "latency_p95_ms": 0.5860179997980595,
+  "per_case": [
+    {
+      "case_id": "eval-001",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.6435219999402761,
+      "correct": true
+    },
+    {
+      "case_id": "eval-002",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.21884899958968163,
+      "correct": true
+    },
+    {
+      "case_id": "eval-003",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.1735340002924204,
+      "correct": true
+    },
+    {
+      "case_id": "eval-004",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.1626609992235899,
+      "correct": true
+    },
+    {
+      "case_id": "eval-005",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.17165499925613403,
+      "correct": true
+    },
+    {
+      "case_id": "eval-006",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.17155800014734268,
+      "correct": true
+    },
+    {
+      "case_id": "eval-007",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.16942899860441685,
+      "correct": true
+    },
+    {
+      "case_id": "eval-008",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.1707569994032383,
+      "correct": true
+    },
+    {
+      "case_id": "eval-009",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.1592479981482029,
+      "correct": true
+    },
+    {
+      "case_id": "eval-010",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.162712000310421,
+      "correct": true
+    },
+    {
+      "case_id": "eval-011",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.17053399980068207,
+      "correct": true
+    },
+    {
+      "case_id": "eval-012",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.16497000120580196,
+      "correct": true
+    },
+    {
+      "case_id": "eval-013",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.16249500028789043,
+      "correct": true
+    },
+    {
+      "case_id": "eval-014",
+      "split": "holdout",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.15903500095009804,
+      "correct": true
+    },
+    {
+      "case_id": "eval-015",
+      "split": "holdout",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.16811400093138218,
+      "correct": true
+    },
+    {
+      "case_id": "eval-016",
+      "split": "holdout",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.16515100002288818,
+      "correct": true
+    },
+    {
+      "case_id": "eval-017",
+      "split": "holdout",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.167858999222517,
+      "correct": true
+    },
+    {
+      "case_id": "eval-018",
+      "split": "holdout",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.4094900004565716,
+      "correct": true
+    },
+    {
+      "case_id": "eval-019",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.1908979993313551,
+      "correct": true
+    },
+    {
+      "case_id": "eval-020",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.2942599970847368,
+      "correct": true
+    },
+    {
+      "case_id": "eval-021",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.304967001080513,
+      "correct": true
+    },
+    {
+      "case_id": "eval-022",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.3154170010238886,
+      "correct": true
+    },
+    {
+      "case_id": "eval-023",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.26104999892413616,
+      "correct": true
+    },
+    {
+      "case_id": "eval-024",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.6156540010124445,
+      "correct": true
+    },
+    {
+      "case_id": "eval-025",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.44551599957048893,
+      "correct": true
+    },
+    {
+      "case_id": "eval-026",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.37753199972212315,
+      "correct": true
+    },
+    {
+      "case_id": "eval-027",
+      "split": "holdout",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.3365330006927252,
+      "correct": true
+    },
+    {
+      "case_id": "eval-028",
+      "split": "holdout",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.46570299938321114,
+      "correct": true
+    },
+    {
+      "case_id": "eval-029",
+      "split": "holdout",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.6350259985774755,
+      "correct": true
+    },
+    {
+      "case_id": "eval-030",
+      "split": "holdout",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.30379699915647507,
+      "correct": true
+    },
+    {
+      "case_id": "eval-031",
+      "split": "dev",
+      "attack_family": "path_traversal",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.7,
+      "latency_ms": 0.3491890002042055,
+      "correct": true
+    },
+    {
+      "case_id": "eval-032",
+      "split": "dev",
+      "attack_family": "path_traversal",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.77,
+      "latency_ms": 0.3326779995113611,
+      "correct": true
+    },
+    {
+      "case_id": "eval-033",
+      "split": "dev",
+      "attack_family": "path_traversal",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.7,
+      "latency_ms": 0.38624100014567375,
+      "correct": true
+    },
+    {
+      "case_id": "eval-034",
+      "split": "holdout",
+      "attack_family": "path_traversal",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.85,
+      "latency_ms": 0.3404239993542433,
+      "correct": true
+    },
+    {
+      "case_id": "eval-035",
+      "split": "holdout",
+      "attack_family": "path_traversal",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.85,
+      "latency_ms": 0.25176999904215336,
+      "correct": true
+    },
+    {
+      "case_id": "eval-036",
+      "split": "dev",
+      "attack_family": "sensitive_resource",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.65,
+      "latency_ms": 0.31393699906766415,
+      "correct": true
+    },
+    {
+      "case_id": "eval-037",
+      "split": "dev",
+      "attack_family": "sensitive_resource",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.77,
+      "latency_ms": 0.27602700144052505,
+      "correct": true
+    },
+    {
+      "case_id": "eval-038",
+      "split": "holdout",
+      "attack_family": "sensitive_resource",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.7,
+      "latency_ms": 0.22413800098001957,
+      "correct": true
+    },
+    {
+      "case_id": "eval-039",
+      "split": "holdout",
+      "attack_family": "sensitive_resource",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.65,
+      "latency_ms": 0.22225900180637836,
+      "correct": true
+    },
+    {
+      "case_id": "eval-040",
+      "split": "dev",
+      "attack_family": "disallowed_host",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.65,
+      "latency_ms": 0.3395650014281273,
+      "correct": true
+    },
+    {
+      "case_id": "eval-041",
+      "split": "dev",
+      "attack_family": "disallowed_host",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.65,
+      "latency_ms": 0.5265829991549253,
+      "correct": true
+    },
+    {
+      "case_id": "eval-042",
+      "split": "holdout",
+      "attack_family": "disallowed_host",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.65,
+      "latency_ms": 0.24852799996733665,
+      "correct": true
+    },
+    {
+      "case_id": "eval-043",
+      "split": "dev",
+      "attack_family": "disallowed_action",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.6900000000000001,
+      "latency_ms": 0.17276999913156033,
+      "correct": true
+    },
+    {
+      "case_id": "eval-044",
+      "split": "dev",
+      "attack_family": "disallowed_action",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.6900000000000001,
+      "latency_ms": 0.16616499796509743,
+      "correct": true
+    },
+    {
+      "case_id": "eval-045",
+      "split": "holdout",
+      "attack_family": "disallowed_action",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.85,
+      "latency_ms": 0.16002600081264973,
+      "correct": true
+    },
+    {
+      "case_id": "eval-046",
+      "split": "dev",
+      "attack_family": "schema_violation",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.85,
+      "latency_ms": 0.14264299906790257,
+      "correct": true
+    },
+    {
+      "case_id": "eval-047",
+      "split": "dev",
+      "attack_family": "schema_violation",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.85,
+      "latency_ms": 0.1478669997304678,
+      "correct": true
+    },
+    {
+      "case_id": "eval-048",
+      "split": "dev",
+      "attack_family": "schema_violation",
+      "expected_verdict": "WARN",
+      "predicted_verdict": "WARN",
+      "score": 0.9199999999999999,
+      "latency_ms": 0.1765270009636879,
+      "correct": true
+    },
+    {
+      "case_id": "eval-049",
+      "split": "dev",
+      "attack_family": "side_channel",
+      "expected_verdict": "WARN",
+      "predicted_verdict": "BLOCK",
+      "score": 0.8,
+      "latency_ms": 0.45174499973654747,
+      "correct": false
+    },
+    {
+      "case_id": "eval-050",
+      "split": "holdout",
+      "attack_family": "side_channel",
+      "expected_verdict": "WARN",
+      "predicted_verdict": "BLOCK",
+      "score": 0.8,
+      "latency_ms": 0.20877600088715553,
+      "correct": false
+    },
+    {
+      "case_id": "eval-051",
+      "split": "dev",
+      "attack_family": "hidden_instruction",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.85,
+      "latency_ms": 0.20125100202858448,
+      "correct": true
+    },
+    {
+      "case_id": "eval-052",
+      "split": "holdout",
+      "attack_family": "hidden_instruction",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.85,
+      "latency_ms": 0.20054499991238117,
+      "correct": true
+    },
+    {
+      "case_id": "eval-053",
+      "split": "dev",
+      "attack_family": "task_call_mismatch",
+      "expected_verdict": "WARN",
+      "predicted_verdict": "WARN",
+      "score": 0.9199999999999999,
+      "latency_ms": 0.1821139995008707,
+      "correct": true
+    },
+    {
+      "case_id": "eval-054",
+      "split": "dev",
+      "attack_family": "description_call_mismatch",
+      "expected_verdict": "WARN",
+      "predicted_verdict": "BLOCK",
+      "score": 0.6900000000000001,
+      "latency_ms": 0.17733200080692768,
+      "correct": false
+    },
+    {
+      "case_id": "eval-055",
+      "split": "dev",
+      "attack_family": "cross_tool_pivot",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.7,
+      "latency_ms": 0.17487400025129318,
+      "correct": true
+    },
+    {
+      "case_id": "eval-056",
+      "split": "holdout",
+      "attack_family": "policy_coverage_gap",
+      "expected_verdict": "WARN",
+      "predicted_verdict": "WARN",
+      "score": 0.9199999999999999,
+      "latency_ms": 0.15267299860715866,
+      "correct": true
+    },
+    {
+      "case_id": "eval-057",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.19006399996578693,
+      "correct": true
+    },
+    {
+      "case_id": "eval-058",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.1603389997035265,
+      "correct": true
+    },
+    {
+      "case_id": "eval-059",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.16658000089228153,
+      "correct": true
+    },
+    {
+      "case_id": "eval-060",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.1575750019401312,
+      "correct": true
+    },
+    {
+      "case_id": "eval-061",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.14865300059318542,
+      "correct": true
+    },
+    {
+      "case_id": "eval-062",
+      "split": "holdout",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.15935000032186508,
+      "correct": true
+    },
+    {
+      "case_id": "eval-063",
+      "split": "holdout",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.16356400027871132,
+      "correct": true
+    },
+    {
+      "case_id": "eval-064",
+      "split": "holdout",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.15853900089859962,
+      "correct": true
+    },
+    {
+      "case_id": "eval-065",
+      "split": "holdout",
+      "attack_family": "path_traversal",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.85,
+      "latency_ms": 0.1622759997844696,
+      "correct": true
+    },
+    {
+      "case_id": "eval-066",
+      "split": "holdout",
+      "attack_family": "sensitive_resource",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.65,
+      "latency_ms": 0.19518399983644485,
+      "correct": true
+    },
+    {
+      "case_id": "eval-067",
+      "split": "holdout",
+      "attack_family": "disallowed_host",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.65,
+      "latency_ms": 0.21417399868369102,
+      "correct": true
+    },
+    {
+      "case_id": "eval-068",
+      "split": "holdout",
+      "attack_family": "task_call_mismatch",
+      "expected_verdict": "WARN",
+      "predicted_verdict": "WARN",
+      "score": 0.9199999999999999,
+      "latency_ms": 0.16413400135934353,
+      "correct": true
+    },
+    {
+      "case_id": "eval-069",
+      "split": "holdout",
+      "attack_family": "side_channel",
+      "expected_verdict": "WARN",
+      "predicted_verdict": "BLOCK",
+      "score": 0.8,
+      "latency_ms": 0.16764499805867672,
+      "correct": false
+    },
+    {
+      "case_id": "eval-070",
+      "split": "holdout",
+      "attack_family": "hidden_instruction",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.85,
+      "latency_ms": 0.17455200105905533,
+      "correct": true
+    },
+    {
+      "case_id": "eval-071",
+      "split": "holdout",
+      "attack_family": "description_call_mismatch",
+      "expected_verdict": "WARN",
+      "predicted_verdict": "BLOCK",
+      "score": 0.6900000000000001,
+      "latency_ms": 0.1644470002502203,
+      "correct": false
+    },
+    {
+      "case_id": "eval-072",
+      "split": "holdout",
+      "attack_family": "cross_tool_pivot",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.7,
+      "latency_ms": 0.16858900152146816,
+      "correct": true
+    },
+    {
+      "case_id": "eval-073",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.17299200035631657,
+      "correct": true
+    },
+    {
+      "case_id": "eval-074",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.18638399988412857,
+      "correct": true
+    },
+    {
+      "case_id": "eval-075",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.18094000034034252,
+      "correct": true
+    },
+    {
+      "case_id": "eval-076",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.16824799962341785,
+      "correct": true
+    },
+    {
+      "case_id": "eval-077",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.16800500079989433,
+      "correct": true
+    },
+    {
+      "case_id": "eval-078",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.16913400031626225,
+      "correct": true
+    },
+    {
+      "case_id": "eval-079",
+      "split": "holdout",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.20489099994301796,
+      "correct": true
+    },
+    {
+      "case_id": "eval-080",
+      "split": "holdout",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.16900399886071682,
+      "correct": true
+    },
+    {
+      "case_id": "eval-081",
+      "split": "holdout",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.1671730000525713,
+      "correct": true
+    },
+    {
+      "case_id": "eval-082",
+      "split": "holdout",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.16816999949514866,
+      "correct": true
+    },
+    {
+      "case_id": "eval-083",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.1591069996356964,
+      "correct": true
+    },
+    {
+      "case_id": "eval-084",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.15626800060272217,
+      "correct": true
+    },
+    {
+      "case_id": "eval-085",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.1556089986115694,
+      "correct": true
+    },
+    {
+      "case_id": "eval-086",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.19569499976933002,
+      "correct": true
+    },
+    {
+      "case_id": "eval-087",
+      "split": "dev",
+      "attack_family": "benign",
+      "expected_verdict": "ALLOW",
+      "predicted_verdict": "ALLOW",
+      "score": 1.0,
+      "latency_ms": 0.16521300002932549,
+      "correct": true
+    },
+    {
+      "case_id": "eval-088",
+      "split": "holdout",
+      "attack_family": "path_traversal",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.77,
+      "latency_ms": 0.18062999844551086,
+      "correct": true
+    },
+    {
+      "case_id": "eval-089",
+      "split": "holdout",
+      "attack_family": "path_traversal",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.85,
+      "latency_ms": 0.46422800049185753,
+      "correct": true
+    },
+    {
+      "case_id": "eval-090",
+      "split": "holdout",
+      "attack_family": "sensitive_resource",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.65,
+      "latency_ms": 0.40186299942433834,
+      "correct": true
+    },
+    {
+      "case_id": "eval-091",
+      "split": "holdout",
+      "attack_family": "sensitive_resource",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.77,
+      "latency_ms": 0.3726230002939701,
+      "correct": true
+    },
+    {
+      "case_id": "eval-092",
+      "split": "holdout",
+      "attack_family": "disallowed_host",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.5700000000000001,
+      "latency_ms": 0.5342009998857975,
+      "correct": true
+    },
+    {
+      "case_id": "eval-093",
+      "split": "holdout",
+      "attack_family": "disallowed_action",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.5700000000000001,
+      "latency_ms": 0.8274259995669127,
+      "correct": true
+    },
+    {
+      "case_id": "eval-094",
+      "split": "holdout",
+      "attack_family": "schema_violation",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.5700000000000001,
+      "latency_ms": 0.5860179997980595,
+      "correct": true
+    },
+    {
+      "case_id": "eval-095",
+      "split": "holdout",
+      "attack_family": "schema_violation",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.5700000000000001,
+      "latency_ms": 0.5231360010802746,
+      "correct": true
+    },
+    {
+      "case_id": "eval-096",
+      "split": "holdout",
+      "attack_family": "side_channel",
+      "expected_verdict": "WARN",
+      "predicted_verdict": "BLOCK",
+      "score": 0.52,
+      "latency_ms": 0.3069860003888607,
+      "correct": false
+    },
+    {
+      "case_id": "eval-097",
+      "split": "holdout",
+      "attack_family": "hidden_instruction",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.32,
+      "latency_ms": 0.8373840004205704,
+      "correct": true
+    },
+    {
+      "case_id": "eval-098",
+      "split": "holdout",
+      "attack_family": "task_call_mismatch",
+      "expected_verdict": "WARN",
+      "predicted_verdict": "BLOCK",
+      "score": 0.44000000000000006,
+      "latency_ms": 0.45882999897003174,
+      "correct": false
+    },
+    {
+      "case_id": "eval-099",
+      "split": "holdout",
+      "attack_family": "description_call_mismatch",
+      "expected_verdict": "WARN",
+      "predicted_verdict": "BLOCK",
+      "score": 0.52,
+      "latency_ms": 0.42575399950146675,
+      "correct": false
+    },
+    {
+      "case_id": "eval-100",
+      "split": "holdout",
+      "attack_family": "cross_tool_pivot",
+      "expected_verdict": "BLOCK",
+      "predicted_verdict": "BLOCK",
+      "score": 0.52,
+      "latency_ms": 0.301358999684453,
+      "correct": true
+    },
+    {
+      "case_id": "eval-101",
+      "split": "holdout",
+      "attack_family": "policy_coverage_gap",
+      "expected_verdict": "WARN",
+      "predicted_verdict": "BLOCK",
+      "score": 0.52,
+      "latency_ms": 0.30976699851453304,
+      "correct": false
+    }
+  ]
+}

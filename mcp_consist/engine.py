@@ -122,7 +122,8 @@ def _policy_coverage_missing(layers: list[LayerResult]) -> bool:
     return False
 
 
-def analyze(ctx: Any, threshold: float = DEFAULT_THRESHOLD) -> dict:
+def analyze(ctx: Any, threshold: float = DEFAULT_THRESHOLD,
+           enabled_layers: Any = None) -> dict:
     """Analyse a joint five-input context.
 
     Parameters
@@ -173,19 +174,25 @@ def analyze(ctx: Any, threshold: float = DEFAULT_THRESHOLD) -> dict:
     trace.append("JSON fields parsed safely")
 
     # --- 3. Applicability: which layers apply ----------------------------
+    if enabled_layers is None:
+        enabled_set = set(LAYER_IDS)
+    else:
+        enabled_set = set(enabled_layers)
+    disabled_set = set(LAYER_IDS) - enabled_set
+
     applicable = {
-        "layer1": bool(context.description.strip()),
-        "layer2": True,  # sensitive-resource scan always runs over all fields
-        "layer3": bool(context.schema.strip()),
+        "layer1": ("layer1" in enabled_set) and bool(context.description.strip()),
+        "layer2": ("layer2" in enabled_set),  # sensitive-resource scan always runs over all fields
+        "layer3": ("layer3" in enabled_set) and bool(context.schema.strip()),
         # Layer 4 applies when there is a proposed call to check against policy.
-        "layer4": bool(context.call.strip()),
-        "layer5": bool(context.task.strip()) and bool(context.call.strip()),
+        "layer4": ("layer4" in enabled_set) and bool(context.call.strip()),
+        "layer5": ("layer5" in enabled_set) and bool(context.task.strip()) and bool(context.call.strip()),
     }
     trace.append(f"Layer applicability: {applicable}")
 
     # --- 4. Run all detection rules --------------------------------------
     layer_findings = run_all_rules(context, parsed_schema, parsed_call,
-                                   parsed_policy)
+                                   parsed_policy, disabled_layers=disabled_set)
     all_findings: list[Finding] = []
     for layer_id in LAYER_IDS:
         all_findings.extend(layer_findings.get(layer_id, []))

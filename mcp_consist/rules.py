@@ -268,10 +268,11 @@ def rule_R201_schema_validation(schema_text: str, call_text: str) -> list[Findin
         if req not in args:
             findings.append(_finding(
                 "R-201", "layer3", Severity.HIGH,
-                f"Required argument missing: {req}.",
-                evidence=req,
-                explanation=f"The schema declares '{req}' as required but the "
-                            f"proposed call does not supply it.",
+                "Required argument missing.",
+                evidence=_redact(req, "required argument"),
+                explanation="The schema declares a required argument that the "
+                            "proposed call does not supply. The argument name "
+                            "is redacted in the evidence field.",
             ))
 
     # 2. Unknown arguments + type/enum validation for declared args.
@@ -281,11 +282,11 @@ def rule_R201_schema_validation(schema_text: str, call_text: str) -> list[Findin
             if additional_props is False:
                 findings.append(_finding(
                     "R-201", "layer3", Severity.HIGH,
-                    f"Unknown argument not declared in schema: {arg_name}.",
-                    evidence=arg_name,
+                    "Unknown argument not declared in schema.",
+                    evidence=_redact(arg_name, "unknown argument"),
                     explanation="The schema sets additionalProperties=false, so "
                                 "arguments not declared in properties are not "
-                                "permitted.",
+                                "permitted. The argument name is redacted.",
                 ))
             # If additionalProperties is true (default), unknown args are noted
             # but treated as lower severity (side-channel concern handled by R-202).
@@ -300,11 +301,11 @@ def rule_R201_schema_validation(schema_text: str, call_text: str) -> list[Findin
         if expected_type and not _type_matches(arg_value, expected_type):
             findings.append(_finding(
                 "R-201", "layer3", Severity.HIGH,
-                f"Type mismatch for argument {arg_name}: expected {expected_type}.",
-                evidence=f"{arg_name}=<redacted>",
-                explanation=f"The schema declares '{arg_name}' as type "
-                            f"'{expected_type}' but the supplied value has a "
-                            f"different type.",
+                f"Type mismatch for an argument: expected {expected_type}.",
+                evidence=_redact(arg_name, "mismatched argument"),
+                explanation="The schema declares an argument with a type that "
+                            "does not match the supplied value. The argument "
+                            "name is redacted.",
             ))
             continue  # don't enum-check a wrongly-typed value
 
@@ -313,11 +314,12 @@ def rule_R201_schema_validation(schema_text: str, call_text: str) -> list[Findin
         if isinstance(enum_values, list) and arg_value not in enum_values:
             findings.append(_finding(
                 "R-201", "layer3", Severity.MEDIUM,
-                f"Enum violation for argument {arg_name}: value not in allowed "
-                f"enumeration.",
-                evidence=f"{arg_name}=<redacted>",
-                explanation=f"The schema restricts '{arg_name}' to the enum "
-                            f"values {enum_values}.",
+                "Enum violation for an argument: value not in allowed "
+                "enumeration.",
+                evidence=_redact(arg_name, "enum-violating argument"),
+                explanation="The schema restricts an argument to a set of enum "
+                            "values and the supplied value is not among them. "
+                            "The argument name is redacted.",
             ))
 
         # Nested object / array type checks are covered by _type_matches.
@@ -353,12 +355,12 @@ def rule_R202_side_channel(schema_text: str, call_text: str) -> list[Finding]:
         if arg_name.lower() in SIDE_CHANNEL_PARAM_NAMES:
             findings.append(_finding(
                 "R-202", "layer3", Severity.MEDIUM,
-                f"Undeclared free-text side-channel parameter: {arg_name}.",
-                evidence=arg_name,
-                explanation=f"The call includes '{arg_name}', which is not "
-                            f"declared in the schema and matches a known "
-                            f"side-channel parameter name. Free-text fields can "
-                            f"carry unintended data.",
+                "Undeclared free-text side-channel parameter.",
+                evidence=_redact(arg_name, "side-channel parameter"),
+                explanation="The call includes an undeclared parameter that "
+                            "matches a known side-channel parameter name. "
+                            "Free-text fields can carry unintended data. The "
+                            "parameter name is redacted.",
             ))
 
     return findings
@@ -415,11 +417,12 @@ def rule_R301_path_outside_roots(call_text: str, policy_text: str) -> list[Findi
         if not path_within_roots(norm, allowed_roots):
             findings.append(_finding(
                 "R-301", "layer4", Severity.HIGH,
-                f"Path target outside allowed roots: {pv}.",
+                "Path target outside allowed roots.",
                 evidence=_redact(pv, "path target"),
                 explanation="The resolved path is not within any allow-listed "
                             "root. Naïve string-prefix checks are not used; the "
-                            "path is normalized lexically first.",
+                            "path is normalized lexically first. The raw path "
+                            "value is redacted in the evidence field.",
             ))
 
     if traversal_found and not any(f.rule_id == "R-301" for f in findings):
@@ -481,11 +484,11 @@ def rule_R302_host_not_allowlisted(call_text: str, policy_text: str) -> list[Fin
             sev = Severity.HIGH
             findings.append(_finding(
                 "R-302", "layer4", sev,
-                f"Destination not allow-listed: {check_host}.",
+                "Destination not allow-listed.",
                 evidence=_redact(check_host, "destination host"),
                 explanation="The host is not on the allowed-hosts list. Exact "
                             "matching is used; subdomains are not implicitly "
-                            "allowed.",
+                            "allowed. The raw host value is redacted.",
             ))
         elif allowed_hosts and host_has_misleading_suffix(check_host, allowed_hosts):
             misleading = True
@@ -536,10 +539,11 @@ def rule_R303_action_not_permitted(call_text: str, policy_text: str) -> list[Fin
     if action not in allowed_actions:
         findings.append(_finding(
             "R-303", "layer4", Severity.HIGH,
-            f"Action not permitted by policy: {action}.",
-            evidence=action,
-            explanation=f"The proposed action '{action}' is not in the "
-                        f"policy's allowed_actions list.",
+            "Action not permitted by policy.",
+            evidence=_redact(action, "proposed action"),
+            explanation="The proposed action is not in the policy's "
+                        "allowed_actions list. The raw action value is "
+                        "redacted in the evidence field.",
         ))
 
     return findings
@@ -621,9 +625,10 @@ def rule_R401_task_vs_call_misalignment(task: str, call_text: str) -> list[Findi
             findings.append(_finding(
                 "R-401", "layer5", Severity.MEDIUM,
                 f"Task suggests '{a}' but proposed call performs '{b}'.",
-                evidence=f"task=<redacted>, call action={action}",
+                evidence=_redact(action, "proposed action"),
                 explanation="The user task and proposed tool-call action point "
-                            "to different intent categories.",
+                            "to different intent categories. The raw action "
+                            "value is redacted.",
             ))
 
     return findings
@@ -667,9 +672,9 @@ def rule_R402_description_vs_call_misalignment(description: str, call_text: str)
             "R-402", "layer5", Severity.MEDIUM,
             "Tool description advertises read-only use but the proposed call "
             "performs a write/delete action.",
-            evidence=f"call action={action}",
+            evidence=_redact(action, "proposed action"),
             explanation="The advertised tool purpose conflicts with the "
-                        "proposed operation.",
+                        "proposed operation. The raw action value is redacted.",
         ))
 
     # Resource mismatch: description targets a file, call targets network, etc.
@@ -714,8 +719,15 @@ def rule_R501_cross_tool_pivot(call_text: str) -> list[Finding]:
 # Orchestrator: run all rules
 # ---------------------------------------------------------------------------
 
-def run_all_rules(context, parsed_schema, parsed_call, parsed_policy):
-    """Run every rule and return {layer_id: [Finding, ...]}."""
+def run_all_rules(context, parsed_schema, parsed_call, parsed_policy,
+                  disabled_layers=None):
+    """Run every rule and return {layer_id: [Finding, ...]}.
+
+    ``disabled_layers`` is an optional iterable of layer ids to skip (used by
+    the ablation harness for genuine layer switching). Skipped layers yield
+    an empty finding list and are treated as N/A by the engine.
+    """
+    disabled = set(disabled_layers or [])
     context_parts = {
         "description": context.description,
         "schema": context.schema,
@@ -724,23 +736,28 @@ def run_all_rules(context, parsed_schema, parsed_call, parsed_policy):
         "call": context.call,
     }
 
-    results = {
-        "layer1": rule_R101_description_integrity(context.description),
-        "layer2": rule_R102_sensitive_resources(context_parts),
-        "layer3": (
+    results = {lid: [] for lid in ("layer1", "layer2", "layer3", "layer4", "layer5")}
+
+    if "layer1" not in disabled:
+        results["layer1"] = rule_R101_description_integrity(context.description)
+    if "layer2" not in disabled:
+        results["layer2"] = rule_R102_sensitive_resources(context_parts)
+    if "layer3" not in disabled:
+        results["layer3"] = (
             rule_R201_schema_validation(context.schema, context.call) +
             rule_R202_side_channel(context.schema, context.call)
-        ),
-        "layer4": (
+        )
+    if "layer4" not in disabled:
+        results["layer4"] = (
             rule_R301_path_outside_roots(context.call, context.policy) +
             rule_R302_host_not_allowlisted(context.call, context.policy) +
             rule_R303_action_not_permitted(context.call, context.policy) +
             rule_R304_policy_coverage_gap(context.policy)
-        ),
-        "layer5": (
+        )
+    if "layer5" not in disabled:
+        results["layer5"] = (
             rule_R401_task_vs_call_misalignment(context.task, context.call) +
             rule_R402_description_vs_call_misalignment(context.description, context.call) +
             rule_R501_cross_tool_pivot(context.call)
-        ),
-    }
+        )
     return results
