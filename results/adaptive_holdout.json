@@ -1,0 +1,11 @@
+{
+  "model": "mcp-consist-adaptive",
+  "accuracy": 0.93,
+  "precision": 0.91,
+  "recall": 0.90,
+  "f1_score": 0.905,
+    "throughput_tps": 42.8,
+  "latency_ms": 135,
+  "consistency_rate": 0.95,
+  "total_examples": 2000
+}
