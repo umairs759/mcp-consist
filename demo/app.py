@@ -36,6 +36,10 @@ if str(PROJECT_ROOT) not in sys.path:
 import gradio as gr
 
 from pipeline import MAX_INPUT_LENGTH, analyze_pair, run_consistency_check
+
+from mcp_consist import analyze as analyze_joint_context, ENGINE_NAME, ENGINE_VERSION
+from mcp_consist.models import AnalysisContext
+from mcp_consist.reporting import json_report, markdown_report
 from demo.components import badge, chips, meta_row, explanation_box, error_box, esc
 
 # ---------------------------------------------------------------------------
@@ -56,6 +60,25 @@ def _load_samples():
 SAMPLES = _load_samples()
 SAMPLE_CHOICES = ["— Load a safe demo pair —"] + [s["label"] for s in SAMPLES]
 SAMPLE_BY_LABEL = {s["label"]: s for s in SAMPLES}
+
+# Joint Context scenarios
+SCENARIOS_PATH = PROJECT_ROOT / "data" / "scenarios.json"
+
+
+def _load_scenarios():
+    try:
+        with open(SCENARIOS_PATH, "r", encoding="utf-8") as fh:
+            return json.load(fh)
+    except Exception:
+        return []
+
+
+SCENARIOS = _load_scenarios()
+SCENARIO_CHOICES = ["— Select a scenario —"] + [s["label"] for s in SCENARIOS]
+SCENARIO_BY_LABEL = {s["label"]: s for s in SCENARIOS}
+
+# In-memory session history (not persisted; cleared on process exit).
+_JOINT_HISTORY = []
 
 ENGINE_CHIP = '<span class="chip chip--active">Lexical consistency prototype (v1)</span>'
 LOCAL_CHIP = '<span class="chip chip--ice">Local standalone</span>'
@@ -183,6 +206,242 @@ def load_sample(label):
     if not sample:
         return ("", "", gr.update())
     return (sample["text1"], sample["text2"], gr.update())
+
+
+# ---------------------------------------------------------------------------
+# Joint Context helpers
+# ---------------------------------------------------------------------------
+
+
+def _joint_char_count(description, schema, policy, task, call):
+    total = sum(len(x or "") for x in (description, schema, policy, task, call))
+    return f"{total:,} chars across five fields"
+
+
+def _validate_joint(description, schema, policy, task, call):
+    msgs = []
+    for label, val in (("description", description), ("schema", schema),
+                       ("policy", policy), ("task", task), ("call", call)):
+        v = val or ""
+        if len(v) > MAX_INPUT_LENGTH:
+            msgs.append(f"{label} exceeds {MAX_INPUT_LENGTH:,} characters.")
+    if not (call or "").strip():
+        msgs.append("Proposed tool call is required.")
+    # JSON validity for schema/policy/call if non-empty
+    for label, val in (("schema", schema), ("policy", policy), ("call", call)):
+        v = (val or "").strip()
+        if v:
+            try:
+                json.loads(v)
+            except (ValueError, TypeError):
+                msgs.append(f"{label} is not valid JSON.")
+    return error_box(" | ".join(msgs)) if msgs else ""
+
+
+def _format_layer_matrix(result):
+    rows = []
+    for layer in result.get("layers", []):
+        score = layer.get("score")
+        score_str = "N/A" if score is None else f"{score:.2f}"
+        n_findings = len(layer.get("findings", []))
+        rows.append(
+            f"<tr>"
+            f"<td>{esc(layer.get('name'))} ({esc(layer.get('layer_id'))})</td>"
+            f"<td>{esc(layer.get('status'))}</td>"
+            f"<td>{esc(score_str)}</td>"
+            f"<td>{n_findings}</td>"
+            f"</tr>"
+        )
+    return (
+        '<div class="panel">'
+        '<h3>Five-layer matrix</h3>'
+        '<table class="layer-matrix">'
+        '<thead><tr><th>Layer</th><th>Status</th><th>Score</th><th>Findings</th></tr></thead>'
+        f'<tbody>{"".join(rows)}</tbody>'
+        '</table>'
+        '</div>'
+    )
+
+
+def _format_findings(result):
+    findings = result.get("findings", [])
+    if not findings:
+        return '<div class="panel"><h3>Findings</h3><p class="muted">No findings.</p></div>'
+    rows = []
+    for f in findings:
+        rows.append(
+            f"<tr>"
+            f"<td>{esc(f.get('rule_id'))}</td>"
+            f"<td>{esc(f.get('layer_id'))}</td>"
+            f"<td>{esc(f.get('severity'))}</td>"
+            f"<td>{esc(f.get('description'))}</td>"
+            f"<td>{esc(f.get('evidence'))}</td>"
+            f"<td>{esc(f.get('explanation'))}</td>"
+            f"</tr>"
+        )
+    return (
+        '<div class="panel">'
+        '<h3>Findings</h3>'
+        '<table class="findings-table">'
+        '<thead><tr><th>Rule</th><th>Layer</th><th>Severity</th>'
+        '<th>Description</th><th>Evidence</th><th>Explanation</th></tr></thead>'
+        f'<tbody>{"".join(rows)}</tbody>'
+        '</table>'
+        '</div>'
+    )
+
+
+def _format_trace(result):
+    entries = result.get("trace", [])
+    items = "".join(f"<li>{esc(e)}</li>" for e in entries)
+    override = result.get("override")
+    extra = f"<p class=\"muted small\">Override: {esc(override)}</p>" if override else ""
+    return (
+        '<div class="panel">'
+        '<h3>Decision trace</h3>'
+        f'<ul class="trace-list">{items}</ul>'
+        f'{extra}'
+        '</div>'
+    )
+
+
+def _format_verdict(result):
+    verdict = result.get("verdict", "ERROR")
+    score = result.get("score", 0.0)
+    engine = result.get("engine", "")
+    version = result.get("engine_version", "")
+    latency = result.get("latency_ms", 0.0)
+    return (
+        f"{badge(verdict)} "
+        f'<div class="result-meta">'
+        f'{meta_row("Verdict", verdict)}'
+        f'{meta_row("Score", f"{score:.4f}")}'
+        f'{meta_row("Engine", f"{engine} v{version}")}'
+        f'{meta_row("Latency (ms)", f"{latency:.2f}")}'
+        f'</div>'
+        f'<p class="muted small">ALLOW is not proof of safety. BLOCK does not mean an actual MCP request was intercepted.</p>'
+    )
+
+
+def _write_reports(result, context, scenario_label):
+    import os, tempfile, time
+    base = Path("/tmp/opencode/mcp-consist-reports")
+    base.mkdir(parents=True, exist_ok=True)
+    ts = str(int(time.time() * 1000))
+    json_path = base / f"report_{ts}.json"
+    md_path = base / f"report_{ts}.md"
+    json_path.write_text(json_report(result, context, scenario_label), encoding="utf-8")
+    md_path.write_text(markdown_report(result, context, scenario_label), encoding="utf-8")
+    return str(json_path), str(md_path)
+
+
+def analyze_joint(description, schema, policy, task, call, threshold, scenario_label):
+    global _JOINT_HISTORY
+    validation_html = _validate_joint(description, schema, policy, task, call)
+    count_html = _joint_char_count(description, schema, policy, task, call)
+
+    if validation_html:
+        # still return empty results
+        return (
+            error_box("Invalid input."),
+            "", "", "", "", count_html, validation_html,
+            _history_dataframe(), "", "",
+        )
+
+    ctx_dict = {
+        "description": description or "",
+        "schema": schema or "",
+        "policy": policy or "",
+        "task": task or "",
+        "call": call or "",
+    }
+    sl = scenario_label if scenario_label and scenario_label != "— Select a scenario —" else None
+    result = analyze_joint_context(ctx_dict, threshold=threshold)
+    context = AnalysisContext(
+        description=ctx_dict["description"],
+        schema=ctx_dict["schema"],
+        policy=ctx_dict["policy"],
+        task=ctx_dict["task"],
+        call=ctx_dict["call"],
+    )
+    verdict_html = _format_verdict(result)
+    layer_matrix_html = _format_layer_matrix(result)
+    findings_html = _format_findings(result)
+    trace_html = _format_trace(result)
+    raw_json = json.dumps(result, indent=2, ensure_ascii=False)
+    json_path, md_path = _write_reports(result, context, sl)
+
+    # update history (minimal data)
+    _JOINT_HISTORY.insert(0, {
+        "timestamp": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "scenario": sl or "",
+        "verdict": result.get("verdict"),
+        "score": result.get("score"),
+        "latency_ms": result.get("latency_ms"),
+    })
+    _JOINT_HISTORY = _JOINT_HISTORY[:50]
+
+    return (
+        verdict_html,
+        layer_matrix_html,
+        findings_html,
+        trace_html,
+        raw_json,
+        count_html,
+        "",
+        _history_dataframe(),
+        json_path,
+        md_path,
+    )
+
+
+def _history_dataframe():
+    rows = []
+    for h in _JOINT_HISTORY:
+        rows.append([
+            h.get("timestamp", ""),
+            h.get("scenario", ""),
+            h.get("verdict", ""),
+            h.get("score", ""),
+            h.get("latency_ms", ""),
+        ])
+    return rows
+
+
+def clear_joint():
+    global _JOINT_HISTORY
+    _JOINT_HISTORY = []
+    return (
+        "", "", "", "", "",  # five fields
+        0.8,  # threshold
+        "— Select a scenario —",  # scenario dd
+        "",  # verdict_html
+        "",  # layer_matrix
+        "",  # findings
+        "",  # trace
+        "",  # raw_json
+        "0 chars across five fields",  # count
+        "",  # validation
+        [],  # history
+        "",  # json path
+        "",  # md path
+    )
+
+
+def load_scenario(label):
+    if not label or label == "— Select a scenario —":
+        return ("", "", "", "", "", gr.update())
+    s = SCENARIO_BY_LABEL.get(label)
+    if not s:
+        return ("", "", "", "", "", gr.update())
+    return (
+        s.get("description", ""),
+        s.get("schema", ""),
+        s.get("policy", ""),
+        s.get("task", ""),
+        s.get("call", ""),
+        gr.update(),
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -396,6 +655,79 @@ def build_demo():
                     padding=False,
                 )
 
+            # --- Joint Context tab ---
+            with gr.TabItem("Joint Context"):
+                with gr.Column(elem_classes=["workbench-main"]):
+
+                    with gr.Group(elem_classes=["panel"]):
+                        gr.HTML('<h2>Joint Context — Five-Layer Security Analysis</h2>', padding=False)
+                        gr.HTML(
+                            '<p class="muted">Analyse tool description, schema, capability policy, '
+                            'user task and proposed tool call together. '
+                            'Expected verdict (in scenarios) is metadata only; the displayed verdict '
+                            'comes from the real engine.</p>',
+                            padding=False,
+                        )
+                        with gr.Row(elem_classes=["controls-row"]):
+                            scenario_dd = gr.Dropdown(
+                                choices=SCENARIO_CHOICES,
+                                value=SCENARIO_CHOICES[0],
+                                label="Scenario",
+                                show_label=True,
+                                elem_classes=["sample-dropdown"],
+                            )
+                            joint_threshold = gr.Slider(
+                                minimum=0.0,
+                                maximum=1.0,
+                                value=0.8,
+                                step=0.01,
+                                label="Threshold",
+                                show_label=True,
+                                elem_classes=["threshold-slider"],
+                            )
+
+                    # Five inputs
+                    with gr.Group(elem_classes=["panel"]):
+                        gr.HTML('<h2>Inputs</h2>', padding=False)
+                        jc_desc = gr.Textbox(label="1. Tool Description", placeholder="Tool description...", lines=4, elem_classes=["context-textbox"])
+                        jc_schema = gr.Textbox(label="2. Tool Input Schema (JSON)", placeholder="{\"type\":\"object\",...}", lines=4, elem_classes=["context-textbox"])
+                        jc_policy = gr.Textbox(label="3. Capability Policy (JSON)", placeholder="{\"allowed_roots\":[...]}", lines=4, elem_classes=["context-textbox"])
+                        jc_task = gr.Textbox(label="4. User Task", placeholder="What the user wants...", lines=3, elem_classes=["context-textbox"])
+                        jc_call = gr.Textbox(label="5. Proposed Tool Call (JSON)", placeholder="{\"tool\":\"...\",\"action\":\"...\",\"arguments\":{...}}", lines=4, elem_classes=["context-textbox"])
+                        joint_count = gr.HTML("0 chars across five fields", padding=False)
+                        joint_val = gr.HTML("", padding=False)
+
+                    # Controls
+                    with gr.Row(elem_classes=["button-row"]):
+                        joint_run_btn = gr.Button("Analyze Joint Context", variant="primary", elem_classes=["btn--primary"])
+                        joint_clear_btn = gr.Button("Clear", variant="secondary", elem_classes=["btn--secondary"])
+
+                    # Results
+                    with gr.Group(elem_classes=["panel results-panel"]):
+                        gr.HTML('<h2>Verdict</h2>', padding=False)
+                        joint_verdict_html = gr.HTML("", padding=False)
+                        joint_layer_matrix = gr.HTML("", padding=False)
+                        joint_findings = gr.HTML("", padding=False)
+                        joint_trace = gr.HTML("", padding=False)
+
+                    with gr.Group(elem_classes=["panel"]):
+                        gr.HTML('<h2>Raw JSON result</h2>', padding=False)
+                        joint_raw_json = gr.Textbox(label="", value="", lines=12, show_label=False, elem_classes=["context-textbox"])
+
+                    with gr.Group(elem_classes=["panel"]):
+                        gr.HTML('<h2>Reports</h2>', padding=False)
+                        with gr.Row():
+                            joint_json_file = gr.File(label="JSON report")
+                            joint_md_file = gr.File(label="Markdown report")
+
+                    with gr.Group(elem_classes=["panel"]):
+                        gr.HTML('<h2>Session history (in-memory)</h2>', padding=False)
+                        joint_history = gr.Dataframe(
+                            headers=["timestamp", "scenario", "verdict", "score", "latency_ms"],
+                            value=[],
+                            interactive=False,
+                        )
+
             # --- Project Info tab ---
             with gr.TabItem("Project Info"):
                 gr.HTML(
@@ -501,6 +833,54 @@ def build_demo():
             outputs=[txt_a, txt_b, sample_dd],
         )
 
+        # Joint Context wiring
+        joint_inputs = [jc_desc, jc_schema, jc_policy, jc_task, jc_call, joint_threshold, scenario_dd]
+        joint_outputs = [
+            joint_verdict_html,
+            joint_layer_matrix,
+            joint_findings,
+            joint_trace,
+            joint_raw_json,
+            joint_count,
+            joint_val,
+            joint_history,
+            joint_json_file,
+            joint_md_file,
+        ]
+
+        joint_run_btn.click(
+            analyze_joint,
+            inputs=joint_inputs,
+            outputs=joint_outputs,
+            show_progress="full",
+        )
+
+        joint_clear_btn.click(
+            clear_joint,
+            inputs=None,
+            outputs=[
+                jc_desc, jc_schema, jc_policy, jc_task, jc_call,
+                joint_threshold, scenario_dd,
+                joint_verdict_html, joint_layer_matrix, joint_findings, joint_trace,
+                joint_raw_json, joint_count, joint_val, joint_history,
+                joint_json_file, joint_md_file,
+            ],
+        )
+
+        # Live counts/validation for joint fields
+        for comp in (jc_desc, jc_schema, jc_policy, jc_task, jc_call):
+            comp.change(
+                lambda d, s, p, t, c: (_joint_char_count(d, s, p, t, c), _validate_joint(d, s, p, t, c)),
+                inputs=[jc_desc, jc_schema, jc_policy, jc_task, jc_call],
+                outputs=[joint_count, joint_val],
+            )
+
+        scenario_dd.change(
+            load_scenario,
+            inputs=[scenario_dd],
+            outputs=[jc_desc, jc_schema, jc_policy, jc_task, jc_call, scenario_dd],
+        )
+
         # Expose components for testability and event-wiring inspection.
         demo.txt_a = txt_a
         demo.txt_b = txt_b
@@ -520,6 +900,27 @@ def build_demo():
         demo.explanation_html = explanation_html
         demo.count_display = count_display
         demo.validation_display = validation_display
+
+        # Joint context handles
+        demo.jc_desc = jc_desc
+        demo.jc_schema = jc_schema
+        demo.jc_policy = jc_policy
+        demo.jc_task = jc_task
+        demo.jc_call = jc_call
+        demo.joint_threshold = joint_threshold
+        demo.scenario_dd = scenario_dd
+        demo.joint_run_btn = joint_run_btn
+        demo.joint_clear_btn = joint_clear_btn
+        demo.joint_verdict_html = joint_verdict_html
+        demo.joint_layer_matrix = joint_layer_matrix
+        demo.joint_findings = joint_findings
+        demo.joint_trace = joint_trace
+        demo.joint_raw_json = joint_raw_json
+        demo.joint_count = joint_count
+        demo.joint_val = joint_val
+        demo.joint_history = joint_history
+        demo.joint_json_file = joint_json_file
+        demo.joint_md_file = joint_md_file
 
     return demo
 
