@@ -1,103 +1,154 @@
-# MCP-CONSIST · Context Integrity & Security Research Workbench
+# MCP-CONSIST — Context-Consistency Enforcement for MCP Tool-Poisoning Detection
 
-A research prototype for lexical consistency analysis of paired contexts, with
-a professional dark workbench UI (Gradio 5.x). Stage 1 is an honest lexical
-baseline — no ML, no sandboxing, no MCP traffic monitoring, no claimed
-detection performance.
+A research prototype (deterministic, rule-based, no ML) for detecting
+inconsistencies between five joint context inputs of an MCP-style tool call:
 
-## What this is (Stage 1)
+1. Tool description
+2. Tool input schema
+3. Capability policy
+4. User task
+5. Proposed tool call
 
-Two inputs are normalised to lowercase, tokenised on whitespace, and compared
-by set overlap:
+The system emits one of four verdicts — ALLOW / WARN / BLOCK / ERROR — with a
+score, five-layer matrix, findings, rule IDs, evidence, and a decision trace.
 
-```
-overlap = len(set1 & set2) / max(len(set1), len(set2))
-```
+## Research motivation
 
-The overlap is compared to a user-selected threshold (default 0.80) to emit one
-of four states: ALLOW / WARN / BLOCK / ERROR.
+Tool-poisoning-style attacks in the Model Context Protocol (MCP) can hide
+malicious intent inside tool descriptions, schemas, or proposed calls that
+disagree with the user's task. MCP-CONSIST explores a deterministic,
+explainable, multi-layer consistency check across all five context inputs
+instead of relying on any single field.
 
-- **ALLOW** — overlap meets the threshold. NOT proof the content is safe.
-- **WARN** — overlap below threshold (and not identical token sets).
-- **BLOCK** — identical token sets (prototype rule; see Limitations).
-- **ERROR** — empty/whitespace/None/non-string input, input over 20,000 chars,
-  or invalid threshold.
+## Problem statement
 
-## What this is NOT
+A single input field (description or call) is insufficient: a malicious tool
+can have a benign description while its proposed call targets a sensitive
+resource. Joint analysis of description, schema, policy, task and call is
+required to surface inconsistencies.
 
-- No semantics, negation handling, or intent understanding.
-- No schema validation, policy enforcement, or rate limiting.
-- No MCP server connection, interception, or traffic monitoring.
-- No sandbox, no canary credential, no outbound network request.
-- No ML — no MiniLM, no XGBoost, no embeddings, no classifier, no trained model.
-- Not a security boundary.
+## Proposed approach
 
-See `docs/LIMITATIONS.md` for the full list.
+A five-layer deterministic rule engine (`policy-rules-v1`) with centralized
+severity penalties and a documented verdict policy. No ML, no network access,
+no filesystem access, no code execution.
 
-## Files
-
-| File | Purpose |
-|------|---------|
-| `pipeline.py` | Backend: `run_consistency_check(...)` + `analyze_pair(...)` |
-| `demo/app.py` | Gradio workbench UI + real callback wiring |
-| `demo/theme.css` | Dark enterprise theme (CSS variables) |
-| `demo/components.py` | HTML helpers; every user string `html.escape`d |
-| `data/samples.json` | Clearly-labelled safe demo pairs |
-| `tests/` | Backend, HTML-contract, and UI-wiring tests |
-| `requirements.txt` | Pinned Gradio 5.x + pytest |
-| `docs/LIMITATIONS.md` | Honest limitations |
-| `docs/SECURITY_REVIEW.md` | Honest security review (no pentesting claim) |
-
-## Implemented
-
-- Lexical overlap detector with real, working `threshold` gating.
-- `analyze_pair` returning status, overlap, threshold, matched / unmatched
-  terms, explanation, error.
-- `run_consistency_check` thin wrapper (backwards-compatible string API).
-- Gradio workbench: Context A / B textboxes, live char count, threshold
-  slider, Run / Clear All / Load sample, results panel (badge, overlap,
-  threshold, terms, explanation), Methodology / Limitations / Project Info
-  tabs, XSS-escaped rendering, dark theme.
-- 44 passing tests (`pytest -q`): backend, badge HTML contract, UI wiring.
-
-## Reported metrics (provenance stated)
-
-The repo previously carried `results/ablation_results.json` and
-`results/adaptive_holdout.json` containing hand-written constants
-(accuracy 0.94/0.93, F1 0.915/0.905, etc.). These could **not** be reproduced
-from any code in the repository (no training pipeline, no dataset, no
-evaluation script existed in Stage 1). They are treated as **unverified,
-from earlier experiments / placeholder** and are **not** cited as achieved
-performance.
-
-## Independently reproduced
+## System architecture
 
 ```
-# Fresh venv
+analyze(ctx, threshold=0.8) ->
+  validation -> JSON parsing -> layer applicability ->
+  run_all_rules (10 rules) -> layer scoring -> overall score -> verdict policy
+```
+
+Source tree:
+
+```
+mcp_consist/
+  __init__.py engine.py rules.py config.py normalization.py
+  models.py validation.py reporting.py
+pipeline.py            # Stage 1 lexical prototype (preserved)
+demo/app.py            # Gradio UI (Stage 1 + Joint Context tab)
+demo/components.py     # XSS-safe HTML helpers
+data/eval_cases.jsonl  # 101 synthetic cases
+data/scenarios.json    # UI scenarios
+scripts/evaluate.py    # evaluation
+scripts/evaluate_ablation.py
+scripts/generate_adversarial_cases.py
+scripts/verify_release.py
+```
+
+## Five detection layers
+
+1. **Description Integrity** (R-101): hidden instruction phrases, zero-width
+   Unicode, bidi control chars, long encoded payload indicators.
+2. **Sensitive Resource Protection** (R-102): references to SSH keys, .env,
+   AWS creds, tokens, cookies, passwords, etc. (redacted evidence).
+3. **Schema and Parameter Integrity** (R-201, R-202): required/unknown/type/
+   enum validation; undeclared side-channel parameters.
+4. **Capability Policy Compliance** (R-301..R-304): path outside roots,
+   disallowed hosts, disallowed actions, missing policy coverage.
+5. **Joint Intent and Tool-Call Integrity** (R-401, R-402, R-501): task vs
+   call mismatch, description vs call mismatch, cross-tool pivot.
+
+## Rule catalog summary
+
+See `docs/RULE_CATALOG.md`. All 10 rules have positive and negative tests.
+
+## Installation
+
+```bash
 python3 -m venv .venv
-. .venv/bin/activate
+source .venv/bin/activate
 pip install -r requirements.txt
-
-# Tests
-python -m pytest tests/ -q        # 44 passed (Stage 1.1)
-python -m pytest tests/ -v        # verbose
-
-# Launch (local only, no public tunnel)
-MCP_CONSIST_HOST=127.0.0.1 PORT=7860 python demo/app.py
 ```
 
-The app binds to `127.0.0.1:7860` by default. `share=False` by default; a
-public tunnel only with `MCP_CONSIST_SHARE=1` (a warning is printed).
+Python 3.11+ recommended. Gradio 5.50.0.
 
-## Planned (Stage 2 — not yet implemented)
+## Launch
 
-A deterministic, rule-based `policy-rules-v1` five-layer detector over a joint
-context (description, schema, policy, task, call), plus a joint-context UI tab
-and a reproducible synthetic benchmark (`data/eval_cases.jsonl`,
-`scripts/evaluate.py`). Engine chip updates to `policy-rules-v1`. See
-`docs/LIMITATIONS.md`.
+```bash
+.venv/bin/python demo/app.py
+# open http://127.0.0.1:7860
+```
 
-## Citation / contact
+Environment: `MCP_CONSIST_HOST`, `PORT`/`GRADIO_SERVER_PORT`, `MCP_CONSIST_SHARE`.
 
-Research prototype. No arXiv, no DOI, no publication is associated with this
-repo. Maintainer: Muhammad Umair (@umairs759).
+## Example workflow
+
+Stage 1 (Analysis Workspace): paste two texts, run consistency check.
+
+Stage 2 (Joint Context tab): fill five fields (or load a scenario), click
+"Analyze Joint Context". Review verdict, five-layer matrix, findings, trace,
+raw JSON, download reports.
+
+## Example result format
+
+```json
+{
+  "verdict": "BLOCK",
+  "score": 0.25,
+  "engine": "policy-rules-v1",
+  "engine_version": "1.0.0",
+  "latency_ms": 0.3,
+  "layers": [...],
+  "findings": [...],
+  "trace": [...],
+  "override": "HIGH finding present"
+}
+```
+
+## Evaluation methodology
+
+Synthetic, author-authored dataset (101 cases, dev/holdout split). Real engine
+execution. Metrics in `results/eval_results.json`.
+
+- Dataset size: 101 (dev 54, holdout 47)
+- Accuracy: 0.9109
+- Binary precision/recall/F1: 1.0000 / 1.0000 / 1.0000
+- Macro F1: 0.5892, Weighted F1: 0.8924
+- Benign false-positive rate: 0.0000
+- Latency p50/p95 (ms): 0.18 / 0.59
+
+Confusion matrix (rows=true): ALLOW 53/53 correct; WARN 4 correct, 9 predicted
+BLOCK; BLOCK 35/35 correct.
+
+## Security and privacy
+
+Inputs processed in memory only; no persistence, no outbound requests, no
+secrets. See `docs/SECURITY_REVIEW.md`, `docs/THREAT_MODEL.md`.
+
+## Limitations
+
+- Deterministic rule-based; no ML, no semantics.
+- No real MCP interception; not a security boundary.
+- Synthetic dataset, author-authored; no external validation.
+- Lexical path/host checks only; no symlink protection.
+- See `docs/LIMITATIONS.md`.
+
+## Future research
+
+- Semantic intent classification (carefully, with real data).
+- Real MCP proxy integration.
+- External benchmark evaluation with licensed datasets.
+- Improved false-positive reduction via context-aware rules.

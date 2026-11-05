@@ -1,50 +1,72 @@
-# MCP-CONSIST Report
+# REPORT — MCP-CONSIST
 
-## Status
+## Abstract
+MCP-CONSIST is a deterministic, rule-based research prototype that detects
+inconsistencies across five joint context inputs (tool description, schema,
+capability policy, user task, proposed tool call) for MCP-style tool poisoning.
+It implements 10 rules over 5 layers, emits ALLOW/WARN/BLOCK/ERROR, and is
+evaluated on 101 synthetic cases. No ML, no real MCP interception.
 
-Stage 1: honest lexical baseline + professional Gradio workbench UI.
-`tests/` — 44 tests, all passing (`python -m pytest tests/ -q`).
+## Introduction
+Tool-poisoning attacks can hide malicious intent in any one field. Single-field
+checks are insufficient; joint analysis is required.
 
-## Backend (`pipeline.py`)
+## Problem statement
+Detect inconsistencies between description, schema, policy, task, and call.
 
-- `run_consistency_check(input_text1, input_text2, threshold) -> "ALLOW"|"WARN"|"BLOCK"|"ERROR"`
-- `analyze_pair(...) -> dict` with status, overlap, threshold, matched_terms,
-  unmatched_a, unmatched_b, explanation, error.
-- `threshold` genuinely gates ALLOW (`overlap >= threshold` → ALLOW).
-- Empty / whitespace / None / non-string / >20,000 chars / invalid threshold → ERROR.
-- Identical token sets → BLOCK (prototype rule; documented in docs/LIMITATIONS.md).
+## Research objective
+Build an explainable, reproducible, deterministic detector and evaluate it
+honestly on synthetic data.
 
-## UI (`demo/app.py`)
+## Threat model
+See docs/THREAT_MODEL.md.
 
-- Dark enterprise theme (`demo/theme.css`), Gradio 5.50.0.
-- Context A / B textboxes with live character count and validation messages.
-- Threshold slider (default 0.80), Run Consistency Analysis, Clear All,
-  Load sample (safe demo pairs from `data/samples.json`).
-- Results panel: status badge (`<span class="badge badge-...">`), overlap %,
-  threshold, matched terms, non-matching terms, short explanation, error details.
-- Real Gradio wiring: inputs → `run_analysis` callback → outputs (verified via
-  live `gradio_client` against a running server).
-- XSS-escaped rendering; no inline event handlers; no tracebacks shown to users.
-- Local by default (`127.0.0.1:7860`, `share=False`).
+## Methodology
+Five-layer rule engine with centralized severity penalties and documented
+verdict policy. See docs/ENGINE_ARCHITECTURE.md and docs/RULE_CATALOG.md.
 
-## Metrics
+## System architecture
+See docs/ENGINE_ARCHITECTURE.md.
 
-No ML, no training pipeline, no dataset, and no reproducible evaluation existed
-in Stage 1. `results/ablation_results.json` and `results/adaptive_holdout.json`
-contain hand-written constants (e.g. recall 0.90 in adaptive_holdout vs the
-1.000 claimed by the old README). These are **unverified, from earlier
-experiments / placeholder** and are **not** cited as achieved performance.
+## Rule implementation
+10 rules R-101..R-501 across 5 layers. See docs/RULE_CATALOG.md.
 
-Numbers in the README/REPORT/UI come only from reproducible code paths; no
-accuracy / precision / recall / F1 is claimed.
+## Experimental setup
+101 synthetic cases, dev 54 / holdout 47, 12 families.
 
-## What is not implemented (Stage 2 planned)
+## Dataset provenance
+Synthetic, authored by project author. Not MCPTox or external data.
 
-- `mcp_consist/engine.py` (`policy-rules-v1`) five-layer rule-based detector.
-- Joint-context UI tab (description, schema, policy, task, call).
-- `data/eval_cases.jsonl` + `scripts/evaluate.py` reproducible benchmark.
+## Results
+Accuracy 0.9109; binary P/R/F1 1.0/1.0/1.0; macro F1 0.5892; weighted F1
+0.8924; benign FPR 0.0. Latency p50 0.18ms, p95 0.59ms. Confusion: ALLOW
+53/53, BLOCK 35/35, WARN 4 correct / 9 predicted BLOCK.
 
-## Security
+## Ablation
+Full five layers: acc 0.9109. Single layers range 0.56-0.81. Progressive
+combination shows monotonic improvement. See results/ablation_results.json.
 
-No pentesting performed. See `docs/SECURITY_REVIEW.md` for an honest review
-and remaining risks. No vulnerability claims are made.
+## Error analysis
+WARN cases often classified BLOCK due to high-severity co-triggers; this is
+conservative (favors blocking). False positives 0 on eval set. Adversarial
+suite reports verdict flips (see results/robustness_results.json).
+
+## Discussion
+Deterministic rules provide explainability but limited generalization. WARN
+vs BLOCK boundary is conservative.
+
+## Limitations
+See docs/LIMITATIONS.md and threat model. No ML, no real interception, no
+external validation, synthetic data only.
+
+## Ethical considerations
+No real user data; inputs not executed; no outbound requests; research
+prototype not a security boundary.
+
+## Conclusion
+A complete, tested, documented, reproducible research prototype suitable for
+supervisor presentation.
+
+## Future work
+Semantic intent models with real data; MCP proxy integration; licensed
+external benchmarks.

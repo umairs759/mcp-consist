@@ -43,6 +43,15 @@ could not be reproduced from any code in the repository and are treated as
 labelled, under `results/_unverified/` and are **not** cited as achieved
 performance.
 
+## Stage 2 dataset
+
+`data/eval_cases.jsonl`: 101 synthetic cases, dev 54 / holdout 47, 12 attack
+families. Each case has case_id, description, schema, policy, task, call,
+expected_verdict, attack_family, explanation, split. Provenance: synthetic,
+authored by project author. Not MCPTox or any external dataset.
+
+`data/scenarios.json`: 10 UI scenarios with expected_verdict metadata.
+
 ## Ethical Considerations
 
 - The tool should not be used as the sole decision mechanism for high-stakes evaluations

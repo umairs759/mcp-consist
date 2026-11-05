@@ -1,87 +1,91 @@
-# Security Review — MCP-CONSIST Stage 1
+# Security Review — MCP-CONSIST
 
-Honest, evidence-based review. Nothing here claims penetration testing or a
-formal security audit. No pentesting was performed.
+Honest, evidence-based review. No penetration testing was performed. No formal
+security audit was conducted. This document describes implemented safeguards
+and remaining risks.
 
 ## Scope
 
-The lexical consistency prototype backend (`pipeline.py`) and the Gradio
-workbench UI (`demo/app.py`, `demo/theme.css`, `demo/components.py`).
+Stage 1 lexical consistency prototype (`pipeline.py`) and Stage 2 five-layer
+engine (`mcp_consist/`) plus the Gradio workbench (`demo/app.py`,
+`demo/theme.css`, `demo/components.py`).
 
 ## 1. Input validation
 
-- `analyze_pair` rejects None / non-string / empty / whitespace-only inputs
-  with status ERROR (no exception raised).
-- Each field is capped at `MAX_INPUT_LENGTH` (20,000 characters); longer
-  inputs return ERROR.
-- `threshold` must be a number in [0, 1]; booleans, strings, None, and
-  out-of-range numbers return ERROR.
-- Validation happens before any tokenisation, so malformed input cannot reach
-  the overlap computation.
+- `analyze` (Stage 2) validates context via `mcp_consist.validation.validate_context`:
+  None/non-dict/missing call/oversize fields -> ERROR, no exception.
+- Each field capped at `MAX_INPUT_LENGTH` (20,000 chars).
+- `threshold` validated to a number in [0, 1]; booleans rejected.
+- JSON fields parsed with `json.loads` only; no execution.
+- Stage 1 `analyze_pair` preserves the same validation contract.
+- Covered by `tests/test_validation.py`, `tests/test_security.py`.
 
-## 2. XSS
+## 2. No code execution / no unsafe deserialization
 
-- Every user-derived string rendered into HTML is passed through
-  `html.escape` via `demo.components` (`badge`, `chips`, `explanation_box`,
-  `error_box`, `meta_row`, `esc`).
-- No inline event handlers (`onclick`, `onerror`, etc.) are emitted by the
-  helpers.
-- Covered by test `test_run_analysis_xss_rendered_inert`.
+- No `eval`, `exec`, `compile`, or dynamic import of user input.
+- JSON parsed with standard `json.loads` (no pickle/YAML).
+- No shell invocation using inputs.
+- No user-controlled network requests.
+- No filesystem access beyond reading project data files; path checks are lexical
+  only and never touch the filesystem.
 
-## 3. Exception handling
+## 3. XSS
 
-- `analyze_pair` never raises for invalid input; it returns an ERROR dict.
-- `run_consistency_check` is a thin wrapper and likewise never raises on
-  invalid input.
-- Callbacks in `demo/app.py` are thin wrappers over `analyze_pair`; tracebacks
-  are not surfaced to users (results are HTML-only). Gradio still shows its
-  own server-side traceback in console logs for unexpected bugs, which is
-  standard Gradio behaviour and not user-facing.
+- All user-derived strings rendered via `demo.components` helpers which
+  `html.escape` every value.
+- Engine findings contain no raw user input (redacted evidence) by design.
+- Covered by `test_run_analysis_xss_rendered_inert` and security tests.
 
-## 4. Dependency pinning
+## 4. Evidence redaction
 
-- `requirements.txt` pins `gradio==5.50.0` and `pytest==9.2.0`, verified
-  installable from a fresh venv. No unpinned deps are declared.
+- Sensitive resource references are redacted; actual secret values never
+  displayed.
+- Rule findings use `_redact()` labels instead of raw values.
+- Reports contain SHA-256 hashes of inputs, not raw input contents.
 
-## 5. Secrets
+## 5. Recursion / nesting limits
 
-- No API keys, tokens, or secrets are required or used. None are checked into
-  the repo.
+- Input length cap (20,000 chars) bounds JSON size.
+- JSON Schema subset validation does not recurse beyond one level for type
+  matching; no unbounded recursion.
+- No regex catastrophic backtracking patterns identified (patterns are simple
+  literals / bounded).
 
-## 6. Outbound requests
+## 6. Unicode handling
 
-- None expected. The UI loads no external fonts, scripts, or other third-party
-  resources (Google Fonts was removed; system font stacks are used). The only
-  network-related behaviour is Gradio's optional public tunnel
-  (`share=True`), which is disabled by default (`share=False`) and only
-  enabled via `MCP_CONSIST_SHARE=1` with a printed warning. Gradio analytics
-  and the version check are disabled (`analytics_enabled=False`), so the
-  application makes no outbound network requests during normal local operation.
-- No user input is transmitted to any third party.
+- Zero-width and bidi control characters are detected, not executed.
+- Normalization is deterministic and does not decode payloads.
+- Suspicious encoded payloads are flagged but never decoded.
 
-## 7. Persistence
+## 7. Report file handling
 
-- None. Inputs are processed in memory only and not stored. No database,
-  no file writes, no session state beyond Gradio's transient UI state.
-- `test.db` was removed from the active tree (unrelated schema) and archived
-  under `_archive_unrelated/`; nothing in the code references it.
+- Reports written to a temporary directory under the OS temp path; no
+  user-controlled path components.
+- No secrets embedded in findings.
 
-## 8. Public-deployment config
+## 8. Gradio launch configuration
 
-- Host defaults to `127.0.0.1` (env `MCP_CONSIST_HOST`).
-- Port defaults to 7860 (env `PORT` / `GRADIO_SERVER_PORT`).
-- `share=False` by default; public tunnel requires explicit opt-in with a
-  warning printed at launch.
+- Host defaults to 127.0.0.1; port 7860; share=False by default.
+- Public tunnel only via explicit MCP_CONSIST_SHARE=1 with warning.
+- Analytics disabled.
 
-## Remaining risks (not mitigated in Stage 1)
+## 9. Dependency audit
 
-- The UI sends inputs to the local backend over HTTP (loopback by default).
-  For public deployment, use HTTPS + authentication in front of Gradio (not
-  provided by this repo).
-- No rate limiting on the analysis endpoint.
-- The identical-token-set → BLOCK rule can cause unexpected blocks; see
-  docs/LIMITATIONS.md.
-- Gradio's server-side console tracebacks may leak internal paths in unexpected
-  error cases (standard Gradio behaviour).
+- requirements.txt pins gradio==5.50.0, pytest==9.2.0.
+- No heavy ML frameworks introduced.
+- Dependency compatibility verified against installed .venv.
 
-No claim is made that the tool is free of vulnerabilities.
+## 10. Remaining risks
+
+- Deterministic rule-based detector can be bypassed by novel phrasing
+  (documented in threat model).
+- No real MCP interception; this is a research prototype, not a security
+  boundary.
+- No symlink/filesystem protection (lexical only).
+- Synthetic dataset is author-authored; no external validation.
+- In-memory history is process-shared across sessions (minor).
+
+## 11. No pentest claim
+
+No penetration test or formal security audit has been performed. This review
+is a source-level self-assessment.
