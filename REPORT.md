@@ -1,30 +1,50 @@
-# MCP-Consist Report
+# MCP-CONSIST Report
 
-## Executive Summary
+## Status
 
-MCP-Consist achieves strong performance across both ablation and adaptive holdout evaluations. All metrics are strictly consistent with the results recorded in `results/ablation_results.json` and `results/adaptive_holdout.json`.
+Stage 1: honest lexical baseline + professional Gradio workbench UI.
+`tests/` — 31 tests, all passing (`python -m pytest tests/ -q`).
 
-## Ablation Study Results
+## Backend (`pipeline.py`)
 
-- **Accuracy**: 94.0% (matches `results/ablation_results.json`)
-- **Precision**: 92.0% (matches `results/ablation_results.json`)
-- **Recall**: 91.0% (matches `results/ablation_results.json`)
-- **F1 Score**: 91.5% (matches `results/ablation_results.json`)
-- **Consistency Rate**: 96.0% (matches `results/ablation_results.json`)
-- **Throughput**: 45.2 tps (matches `results/ablation_results.json`)
-- **Latency**: 120 ms (matches `results/ablation_results.json`)
+- `run_consistency_check(input_text1, input_text2, threshold) -> "ALLOW"|"WARN"|"BLOCK"|"ERROR"`
+- `analyze_pair(...) -> dict` with status, overlap, threshold, matched_terms,
+  unmatched_a, unmatched_b, explanation, error.
+- `threshold` genuinely gates ALLOW (`overlap >= threshold` → ALLOW).
+- Empty / whitespace / None / non-string / >20,000 chars / invalid threshold → ERROR.
+- Identical token sets → BLOCK (prototype rule; documented in docs/LIMITATIONS.md).
 
-## Adaptive Holdout Results
+## UI (`demo/app.py`)
 
-- **Accuracy**: 93.0% (matches `results/adaptive_holdout.json`)
-- **Precision**: 91.0% (matches `results/adaptive_holdout.json`)
-- **Recall**: 90.0% (matches `results/adaptive_holdout.json`)
-- **F1 Score**: 90.5% (matches `results/adaptive_holdout.json`)
-- **Consistency Rate**: 95.0% (matches `results/adaptive_holdout.json`)
+- Dark enterprise theme (`demo/theme.css`), Gradio 5.50.0.
+- Context A / B textboxes with live character count and validation messages.
+- Threshold slider (default 0.80), Run Consistency Analysis, Clear All,
+  Load sample (safe demo pairs from `data/samples.json`).
+- Results panel: status badge (`<span class="badge badge-...">`), overlap %,
+  threshold, matched terms, non-matching terms, short explanation, error details.
+- Real Gradio wiring: inputs → `run_analysis` callback → outputs (verified via
+  live `gradio_client` against a running server).
+- XSS-escaped rendering; no inline event handlers; no tracebacks shown to users.
+- Local by default (`127.0.0.1:7860`, `share=False`).
 
-## Key Findings
+## Metrics
 
-- Badge rendering UI has been polished with colored pill tags for ALLOW/WARN/BLOCK/ERROR states
-- Clear/reset functionality added for improved UX
-- All 70 tests pass with no failures
-- Pipeline logic is deterministic and threshold-based
+No ML, no training pipeline, no dataset, and no reproducible evaluation existed
+in Stage 1. `results/ablation_results.json` and `results/adaptive_holdout.json`
+contain hand-written constants (e.g. recall 0.90 in adaptive_holdout vs the
+1.000 claimed by the old README). These are **unverified, from earlier
+experiments / placeholder** and are **not** cited as achieved performance.
+
+Numbers in the README/REPORT/UI come only from reproducible code paths; no
+accuracy / precision / recall / F1 is claimed.
+
+## What is not implemented (Stage 2 planned)
+
+- `mcp_consist/engine.py` (`policy-rules-v1`) five-layer rule-based detector.
+- Joint-context UI tab (description, schema, policy, task, call).
+- `data/eval_cases.jsonl` + `scripts/evaluate.py` reproducible benchmark.
+
+## Security
+
+No pentesting performed. See `docs/SECURITY_REVIEW.md` for an honest review
+and remaining risks. No vulnerability claims are made.

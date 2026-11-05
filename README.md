@@ -1,188 +1,103 @@
----
-title: "🛡️ MCP Consist: Context-Consistency Enforcement for MCP Tool-Poisoning Detection"
-emoji: "🛡️"
-colorFrom: "red"
-colorTo: "green"
-sdk: "gradio"
-sdk_version: "5.0.0"
-app_file: "demo/app.py"
-pinned: false
----
+# MCP-CONSIST · Context Integrity & Security Research Workbench
 
+A research prototype for lexical consistency analysis of paired contexts, with
+a professional dark workbench UI (Gradio 5.x). Stage 1 is an honest lexical
+baseline — no ML, no sandboxing, no MCP traffic monitoring, no claimed
+detection performance.
 
-# 🛡️ MCP-Consist: Context-Consistency Enforcement for MCP Tool-Poisoning Detection
+## What this is (Stage 1)
 
-## Executive Summary
+Two inputs are normalised to lowercase, tokenised on whitespace, and compared
+by set overlap:
 
-MCP-Consist provides a policy-engineered, ML-augmented framework for detecting and blocking tool-poisoning attacks (TPA) in Model Context Protocol (MCP) tool calls. Unlike isolated keyword scanners or embedding classifiers, MCP-Consist employs a **joint context formulation** — combining Description, Schema, Policy, Task, and Call parameters — and a progressive ablation pipeline (Levels A–E) that scales F1 from 0.286 to 1.000. All metrics are derived from empirical evaluation on 3,500+ tool-call examples, with zero TPA leakage in adaptive holdout test sets.
-
----
-
-## The Threat: Why MCP-Consist?
-
-**Tool-Poisoning Attacks (TPA)** in the Model Context Protocol involve adversarially crafted tool calls that contain benign-separated keywords while embedding malicious intent across distributed parameters. Existing defenses fall short because:
-
-- **Keyword-based scanners** miss semantically obfuscated attacks where malicious intent is distributed across schema fields, task descriptions, and policy parameters.
-- **Isolated embedding classifiers** operate on single modalities (typically just the description), failing to capture cross-parameter consistency patterns.
-- **Static allow-lists** cannot adapt to novel attack patterns or cross-tool pivot strategies.
-
-MCP-Consist addresses these gaps by evaluating the **joint consistency** of all five context layers simultaneously, enabling deterministic ALLOW/WARN/BLOCK rulings even against multi-tool cross-pivot attacks.
-
----
-
-## Architecture & Core Invariants
-
-### Joint Context Formulation
-
-Every MCP tool call is augmented with five structured context layers:
-
-| Layer | Description |
-|-------|-------------|
-| **Description** | Natural-language summary of the tool's purpose |
-| **Schema** | JSON/YAML parameter schema defining types, constraints, and defaults |
-| **Policy** | Security constraints, rate limits, and credential scopes |
-| **Task** | The high-level objective the tool call serves |
-| **Call** | The actual parameter instantiation at execution time |
-
-### Pre-Execution Decision Pipeline
-
-```mermaid
-flowchart TD
-    IC[Incoming Tool Call] --> CS[Context Serializer]
-    CS --> PE[Policy Engine + ML Classifier]
-    PE -->|ALLOW| CSandbox[Canary Sandbox]
-    PE -->|WARN| Alert[Operator Alert]
-    PE -->|BLOCK| Reject[Request Rejected]
+```
+overlap = len(set1 & set2) / max(len(set1), len(set2))
 ```
 
-**Deterministic policy override logic**: If any context layer exhibits zero consistency (e.g., schema-field values contradict the description), the policy automatically escalates to BLOCK regardless of ML classifier output.
+The overlap is compared to a user-selected threshold (default 0.80) to emit one
+of four states: ALLOW / WARN / BLOCK / ERROR.
 
-**Strict server-disjoint guarantee**: Training and test partitions are sourced from completely non-overlapping tool sets (`train ∩ test == ∅`), ensuring zero leakage and genuine generalization to unseen tools.
+- **ALLOW** — overlap meets the threshold. NOT proof the content is safe.
+- **WARN** — overlap below threshold (and not identical token sets).
+- **BLOCK** — identical token sets (prototype rule; see Limitations).
+- **ERROR** — empty/whitespace/None/non-string input, input over 20,000 chars,
+  or invalid threshold.
 
----
+## What this is NOT
 
-## Empirical Benchmark & Ablation Study
+- No semantics, negation handling, or intent understanding.
+- No schema validation, policy enforcement, or rate limiting.
+- No MCP server connection, interception, or traffic monitoring.
+- No sandbox, no canary credential, no outbound network request.
+- No ML — no MiniLM, no XGBoost, no embeddings, no classifier, no trained model.
+- Not a security boundary.
 
-### Progressive Context Gain (Levels A–E)
+See `docs/LIMITATIONS.md` for the full list.
 
-The following table reports F1 scores across progressive context inclusion, evaluated on 1,500 held-out tool-call examples:
+## Files
 
-| Level | Context Included | Keyword F1 | TF-IDF F1 | MiniLM + XGBoost F1 |
-|-------|-----------------|------------|-----------|---------------------|
-| **A** | Description only | 0.124 | 0.211 | **0.286** |
-| **B** | Description + Schema | 0.187 | 0.305 | **0.412** |
-| **C** | Description + Schema + Policy | 0.223 | 0.358 | **0.531** |
-| **D** | Description + Schema + Policy + Task | 0.261 | 0.397 | **0.682** |
-| **E** | **Full Joint Context** (all 5 layers) | 0.298 | 0.429 | **1.000** |
+| File | Purpose |
+|------|---------|
+| `pipeline.py` | Backend: `run_consistency_check(...)` + `analyze_pair(...)` |
+| `demo/app.py` | Gradio workbench UI + real callback wiring |
+| `demo/theme.css` | Dark enterprise theme (CSS variables) |
+| `demo/components.py` | HTML helpers; every user string `html.escape`d |
+| `data/samples.json` | Clearly-labelled safe demo pairs |
+| `tests/` | Backend, HTML-contract, and UI-wiring tests |
+| `requirements.txt` | Pinned Gradio 5.x + pytest |
+| `docs/LIMITATIONS.md` | Honest limitations |
+| `docs/SECURITY_REVIEW.md` | Honest security review (no pentesting claim) |
 
-*F1 scales from 0.286 (Level A: description-only) to 1.000 (Level E: full joint context), demonstrating the critical importance of cross-layer consistency verification.*
+## Implemented
 
-### Adaptive Holdout Performance
+- Lexical overlap detector with real, working `threshold` gating.
+- `analyze_pair` returning status, overlap, threshold, matched / unmatched
+  terms, explanation, error.
+- `run_consistency_check` thin wrapper (backwards-compatible string API).
+- Gradio workbench: Context A / B textboxes, live char count, threshold
+  slider, Run / Clear All / Load sample, results panel (badge, overlap,
+  threshold, terms, explanation), Methodology / Limitations / Project Info
+  tabs, XSS-escaped rendering, dark theme.
+- 31 passing tests (`pytest -q`): backend, badge HTML contract, UI wiring.
 
-Evaluated on 2,000 unseen examples including the `multi_tool_cross_pivot` family of obfuscated attacks:
+## Reported metrics (provenance stated)
 
-| Metric | Score |
-|--------|-------|
-| **Accuracy** | 93.0% |
-| **Precision** | 91.0% |
-| **Recall** | **1.000** (zero TPA leakage) |
-| **F1 Score** | 90.5% |
-| **Consistency Rate** | 95.0% |
-| **Throughput** | 42.8 tps |
-| **Latency** | 135 ms |
+The repo previously carried `results/ablation_results.json` and
+`results/adaptive_holdout.json` containing hand-written constants
+(accuracy 0.94/0.93, F1 0.915/0.905, etc.). These could **not** be reproduced
+from any code in the repository (no training pipeline, no dataset, no
+evaluation script existed in Stage 1). They are treated as **unverified,
+from earlier experiments / placeholder** and are **not** cited as achieved
+performance.
 
-*Recall of 1.000 on adaptive holdout confirms that no tool-poisoning attacks from the `multi_tool_cross_pivot` family escape detection.*
+## Independently reproduced
 
----
-
-## Quickstart & Installation
-
-### Prerequisites
-
-- Python 3.11+
-- Git
-
-### Setup
-
-```bash
-# Clone the repository
-git clone https://github.com/umairs759/mcp-consist.git
-cd mcp-consist
-
-# Install in editable mode (recommended for development)
-pip install -e .
-
-# Or install from requirements
+```
+# Fresh venv
+python3 -m venv .venv
+. .venv/bin/activate
 pip install -r requirements.txt
+
+# Tests
+python -m pytest tests/ -q        # 31 passed (Stage 1)
+python -m pytest tests/ -v        # verbose
+
+# Launch (local only, no public tunnel)
+MCP_CONSIST_HOST=127.0.0.1 PORT=7860 python demo/app.py
 ```
 
-### Launching the Interactive UI
+The app binds to `127.0.0.1:7860` by default. `share=False` by default; a
+public tunnel only with `MCP_CONSIST_SHARE=1` (a warning is printed).
 
-```bash
-python demo/app.py
-```
+## Planned (Stage 2 — not yet implemented)
 
-The command above starts the Gradio interface on `http://127.0.0.1:7860` and automatically generates a public, 72-hour shareable URL (`https://<hash>.gradio.live`) for demo purposes.
+A deterministic, rule-based `policy-rules-v1` five-layer detector over a joint
+context (description, schema, policy, task, call), plus a joint-context UI tab
+and a reproducible synthetic benchmark (`data/eval_cases.jsonl`,
+`scripts/evaluate.py`). Engine chip updates to `policy-rules-v1`. See
+`docs/LIMITATIONS.md`.
 
-### Running the Complete Test Suite
+## Citation / contact
 
-```bash
-pytest tests/ -v
-```
-
-All 70 tests exit with code 0, confirming zero regression.
-
-### Running the Full Orchestration Pipeline
-
-```bash
-bash scripts/run_all.sh
-```
-
-This executes the end-to-end pipeline: data validation → consistency checking → badge rendering → test-suite verification → report generation.
-
----
-
-## Security & Canary Sandbox
-
-### Subprocess Canary Credential Validation
-
-MCP-Consist employs a **canary sandbox** that validates subprocess execution credentials before any tool call is permitted:
-
-- `canary_id_rsa`: RSA private key fingerprint verifying the subprocess identity
-- `canary_aws_tokens`: AWS temporary credentials scoped to the minimum required permissions
-
-If canary validation fails, the policy engine issues an automatic **BLOCK** ruling, preventing tool-poisoned subprocesses from executing within the MCP environment.
-
-### Responsible Disclosure
-
-Security researchers discovering potential bypasses or false-positive patterns are encouraged to review `SECURITY.md` for our responsible disclosure policy and submit findings via the designated channel.
-
----
-
-## Citation & Academic Contact
-
-### BibTeX Citation
-
-```bibtex
-@misc{mcp-consist-2026,
-  author = {Muhammad Umair},
-  title  = {MCP-Consist: Context-Consistency Enforcement for MCP Tool-Poisoning Detection},
-  year   = {2026},
-  journal = {arXiv preprint arXiv:2611.01234},
-  doi    = {10.48550/arXiv.2611.01234}
-}
-```
-
-### Author
-
-**Muhammad Umair** (@umairs759)  
-Research: Model Context Protocol Security · Tool-Poisoning Detection · ML-Augmented Policy Enforcement
-
----
-
-## References
-
-- Tool-Poisoning Attack (TPA) Framework: Umair et al., 2026
-- Model Context Protocol Specification: MCP Working Group, 2024
-- Gradio 5.0.0 SDK Documentation
-- scikit-learn 1.5. XGBoost 2.0. XGBoost documentation
+Research prototype. No arXiv, no DOI, no publication is associated with this
+repo. Maintainer: Muhammad Umair (@umairs759).

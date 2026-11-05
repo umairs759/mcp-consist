@@ -1,0 +1,30 @@
+[
+  {
+    "id": "benign-similar",
+    "label": "Benign · high overlap (safe demo)",
+    "text1": "Fetch the current weather for Lahore",
+    "text2": "Fetch the current weather for Lahore tomorrow",
+    "description": "Two safe, near-identical weather requests. Expect ALLOW at the default 0.80 threshold."
+  },
+  {
+    "id": "benign-different",
+    "label": "Benign · low overlap (safe demo)",
+    "text1": "Send email to bob",
+    "text2": "Read the daily news digest",
+    "description": "Two unrelated safe requests. Expect WARN at the default 0.80 threshold."
+  },
+  {
+    "id": "identical",
+    "label": "Identical token sets (prototype BLOCK rule)",
+    "text1": "Hello world",
+    "text2": "Hello world",
+    "description": "Identical inputs are flagged BLOCK by the prototype identical-set rule (see Limitations)."
+  },
+  {
+    "id": "case-insensitive",
+    "label": "Same words, different case (prototype BLOCK rule)",
+    "text1": "Hello",
+    "text2": "hello",
+    "description": "Lowercase normalisation makes these identical token sets, so the prototype flags BLOCK."
+  }
+]

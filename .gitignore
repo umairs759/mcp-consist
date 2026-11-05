@@ -1,0 +1,24 @@
+# MCP-CONSIST .gitignore
+
+# Archived unrelated original artifacts (kept for provenance, not part of the project)
+_archive_unrelated/
+
+# Unrelated database / audit outputs (*.db and *_output.txt are not project artifacts)
+*.db
+*_output.txt
+*_result.txt
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editor / OS
+.DS_Store
+*.swp
+*.swo
