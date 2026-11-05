@@ -3,7 +3,7 @@
 ## Status
 
 Stage 1: honest lexical baseline + professional Gradio workbench UI.
-`tests/` — 31 tests, all passing (`python -m pytest tests/ -q`).
+`tests/` — 44 tests, all passing (`python -m pytest tests/ -q`).
 
 ## Backend (`pipeline.py`)
 

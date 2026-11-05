@@ -2,7 +2,8 @@
 
 Every user-derived string is passed through ``html.escape`` before being
 interpolated, so rendered output is always inert (no XSS). No inline event
-handlers are emitted by these helpers.
+handlers are emitted by these helpers. Presentational details live in
+``demo/theme.css``; these helpers emit only structural classes.
 """
 
 from __future__ import annotations
@@ -34,7 +35,7 @@ def badge(status: str) -> str:
 def chips(items) -> str:
     """Render a list of term chips from an iterable of strings."""
     if not items:
-        return '<em style="color:#5B6572;font-size:12px;">(none)</em>'
+        return '<em class="term-empty">(none)</em>'
     parts = []
     for item in items:
         parts.append(
@@ -47,8 +48,8 @@ def meta_row(label: str, value) -> str:
     """Render a single metadata row."""
     return (
         f'<div class="meta-item">'
-        f'<span style="color:#8B95A1;">{html.escape(str(label))}</span>: '
-        f'<b>{html.escape(str(value))}</b>'
+        f'<span class="meta-label">{html.escape(str(label))}</span>: '
+        f'<b class="meta-value">{html.escape(str(value))}</b>'
         f"</div>"
     )
 

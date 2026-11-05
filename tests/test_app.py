@@ -96,6 +96,28 @@ def test_boundary_max_length_ok():
     assert run_consistency_check(text, text, 0.5) in ("ALLOW", "BLOCK")
 
 
+def test_threshold_boundary_min_and_max():
+    """Thresholds of exactly 0.0 and 1.0 are valid (in range)."""
+    assert run_consistency_check("a b", "c d", 0.0) == "ALLOW"
+    assert run_consistency_check("a b", "c d", 1.0) == "WARN"
+    assert run_consistency_check("a b", "a b", 1.0) == "BLOCK"
+
+
+def test_threshold_zero_means_always_allow_unless_blocked():
+    """At threshold 0.0 any overlap meets the threshold (unless identical sets)."""
+    out = analyze_pair("a b", "b c", 0.0)
+    assert out["status"] == "ALLOW"
+    assert out["threshold"] == 0.0
+
+
+def test_threshold_one_means_only_full_overlap_allows():
+    """At threshold 1.0 only full overlap is ALLOW (identical sets still BLOCK)."""
+    out = analyze_pair("a b", "a b", 1.0)
+    assert out["status"] == "BLOCK"   # identical-set rule wins
+    out = analyze_pair("a b", "a c", 1.0)
+    assert out["status"] == "WARN"    # overlap 0.5 < 1.0
+
+
 def test_return_values_are_only_valid_states():
     """Every valid input returns one of the four states."""
     for result in (

@@ -50,11 +50,14 @@ workbench UI (`demo/app.py`, `demo/theme.css`, `demo/components.py`).
 
 ## 6. Outbound requests
 
-- None expected. The only network-related behaviour is Gradio's optional
-  public tunnel (`share=True`), which is disabled by default (`share=False`)
-  and only enabled via `MCP_CONSIST_SHARE=1` with a printed warning. Google
-  Fonts is linked via `<link rel=preconnect ...>` in the page head for font
-  loading; the page works with system fallbacks if fonts fail to load.
+- None expected. The UI loads no external fonts, scripts, or other third-party
+  resources (Google Fonts was removed; system font stacks are used). The only
+  network-related behaviour is Gradio's optional public tunnel
+  (`share=True`), which is disabled by default (`share=False`) and only
+  enabled via `MCP_CONSIST_SHARE=1` with a printed warning. Gradio analytics
+  and the version check are disabled (`analytics_enabled=False`), so the
+  application makes no outbound network requests during normal local operation.
+- No user input is transmitted to any third party.
 
 ## 7. Persistence
 

@@ -58,7 +58,7 @@ See `docs/LIMITATIONS.md` for the full list.
   slider, Run / Clear All / Load sample, results panel (badge, overlap,
   threshold, terms, explanation), Methodology / Limitations / Project Info
   tabs, XSS-escaped rendering, dark theme.
-- 31 passing tests (`pytest -q`): backend, badge HTML contract, UI wiring.
+- 44 passing tests (`pytest -q`): backend, badge HTML contract, UI wiring.
 
 ## Reported metrics (provenance stated)
 
@@ -79,7 +79,7 @@ python3 -m venv .venv
 pip install -r requirements.txt
 
 # Tests
-python -m pytest tests/ -q        # 31 passed (Stage 1)
+python -m pytest tests/ -q        # 44 passed (Stage 1.1)
 python -m pytest tests/ -v        # verbose
 
 # Launch (local only, no public tunnel)
