@@ -1,8 +1,8 @@
 {
-  "generated_at_utc": "2026-11-05T20:18:30Z",
+  "generated_at_utc": "2026-11-05T20:26:16Z",
   "engine": "policy-rules-v1",
   "engine_version": "1.0.0",
-  "source_revision": "99468798c1c7e48d90f7bc25938fa5b7b451c5f5",
+  "source_revision": "7fa7b79f114879ac4117fc868bdd0295f62fbca0",
   "config_hash": "6e7d9db26a4cb01d7afe56325f542a396987b136de2db733b0e31d85cbee4d3f",
   "dataset_path": "/home/kali/Desktop/mcp-consist-main/data/eval_cases.jsonl",
   "dataset_sha256": "c2b1be7e4825782c169ba932f6156e13279e806d5fb7dd05322e348907650157",
@@ -91,8 +91,8 @@
       "benign_false_positive_rate": 0.0
     },
     "benign_false_positive_rate": 0.0,
-    "latency_p50_ms": 0.18190799839794636,
-    "latency_p95_ms": 0.5882429983466864
+    "latency_p50_ms": 0.33377500250935555,
+    "latency_p95_ms": 0.4893260020762682
   },
   "dev": {
     "dataset_size": 54,
@@ -174,8 +174,8 @@
       "benign_false_positive_rate": 0.0
     },
     "benign_false_positive_rate": 0.0,
-    "latency_p50_ms": 0.18020049948245287,
-    "latency_p95_ms": 0.3193115012720227
+    "latency_p50_ms": 0.3328099986538291,
+    "latency_p95_ms": 0.44291884852573266
   },
   "holdout": {
     "dataset_size": 47,
@@ -257,8 +257,8 @@
       "benign_false_positive_rate": 0.0
     },
     "benign_false_positive_rate": 0.0,
-    "latency_p50_ms": 0.22641400061547756,
-    "latency_p95_ms": 0.4678017010912297
+    "latency_p50_ms": 0.34454100020229816,
+    "latency_p95_ms": 0.472975100390613
   },
   "accuracy": 1.0,
   "macro_f1": 0.75,
@@ -392,8 +392,8 @@
     "benign_false_positive_rate": 0.0
   },
   "benign_false_positive_rate": 0.0,
-  "latency_p50_ms": 0.18190799839794636,
-  "latency_p95_ms": 0.5882429983466864,
+  "latency_p50_ms": 0.33377500250935555,
+  "latency_p95_ms": 0.4893260020762682,
   "per_case": [
     {
       "case_id": "eval-001",
@@ -402,7 +402,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.5882429983466864,
+      "latency_ms": 0.7619700003415346,
       "correct": true
     },
     {
@@ -412,7 +412,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.226544002071023,
+      "latency_ms": 0.3183370027691126,
       "correct": true
     },
     {
@@ -422,7 +422,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.19592600129544735,
+      "latency_ms": 0.3338519986718893,
       "correct": true
     },
     {
@@ -432,7 +432,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.18280000053346157,
+      "latency_ms": 0.3024429976940155,
       "correct": true
     },
     {
@@ -442,7 +442,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.19932799972593784,
+      "latency_ms": 0.33192200027406216,
       "correct": true
     },
     {
@@ -452,7 +452,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.17425099946558475,
+      "latency_ms": 0.35327500104904175,
       "correct": true
     },
     {
@@ -462,7 +462,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.16826699860394,
+      "latency_ms": 0.3613990005105734,
       "correct": true
     },
     {
@@ -472,7 +472,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.16805999912321568,
+      "latency_ms": 0.3364679981023073,
       "correct": true
     },
     {
@@ -482,7 +482,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.15579500049352646,
+      "latency_ms": 0.2783379964530468,
       "correct": true
     },
     {
@@ -492,7 +492,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.16180199943482876,
+      "latency_ms": 0.3141159974038601,
       "correct": true
     },
     {
@@ -502,7 +502,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.17029999941587448,
+      "latency_ms": 0.30668999813497066,
       "correct": true
     },
     {
@@ -512,7 +512,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.18674099817872047,
+      "latency_ms": 0.2777970004826784,
       "correct": true
     },
     {
@@ -522,7 +522,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.16162499971687794,
+      "latency_ms": 0.2681669984012842,
       "correct": true
     },
     {
@@ -532,7 +532,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.1568590011447668,
+      "latency_ms": 1.8192249983549118,
       "correct": true
     },
     {
@@ -542,7 +542,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.16448299959301949,
+      "latency_ms": 0.3958069998770952,
       "correct": true
     },
     {
@@ -552,7 +552,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.16475899890065193,
+      "latency_ms": 0.42318700067698956,
       "correct": true
     },
     {
@@ -562,7 +562,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.164920000359416,
+      "latency_ms": 0.31048899702727795,
       "correct": true
     },
     {
@@ -572,7 +572,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.16783799976110458,
+      "latency_ms": 0.31627400033175945,
       "correct": true
     },
     {
@@ -582,7 +582,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.15714400075376034,
+      "latency_ms": 0.26985399797558784,
       "correct": true
     },
     {
@@ -592,7 +592,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.15287500247359276,
+      "latency_ms": 0.2630719970911741,
       "correct": true
     },
     {
@@ -602,7 +602,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.1535869985818863,
+      "latency_ms": 0.2978559974581003,
       "correct": true
     },
     {
@@ -612,7 +612,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.1550620011985302,
+      "latency_ms": 0.322290001437068,
       "correct": true
     },
     {
@@ -622,7 +622,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.1539010014384985,
+      "latency_ms": 0.41305200196802616,
       "correct": true
     },
     {
@@ -632,7 +632,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.15311400033533573,
+      "latency_ms": 0.33610899746418,
       "correct": true
     },
     {
@@ -642,7 +642,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.15475000068545341,
+      "latency_ms": 0.30230999924242496,
       "correct": true
     },
     {
@@ -652,7 +652,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.154126999899745,
+      "latency_ms": 0.30130000226199627,
       "correct": true
     },
     {
@@ -662,7 +662,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.1549100000411272,
+      "latency_ms": 0.2698679994791746,
       "correct": true
     },
     {
@@ -672,7 +672,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.153719000518322,
+      "latency_ms": 0.26600100472569466,
       "correct": true
     },
     {
@@ -682,7 +682,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.15255599841475487,
+      "latency_ms": 0.26250600069761276,
       "correct": true
     },
     {
@@ -692,7 +692,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.16091799922287464,
+      "latency_ms": 0.3449700027704239,
       "correct": true
     },
     {
@@ -702,7 +702,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.7,
-      "latency_ms": 0.29237300157546997,
+      "latency_ms": 0.3902480024844408,
       "correct": true
     },
     {
@@ -712,7 +712,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.77,
-      "latency_ms": 0.2105490006506443,
+      "latency_ms": 0.4225540030747652,
       "correct": true
     },
     {
@@ -722,7 +722,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.7,
-      "latency_ms": 0.23003500141203403,
+      "latency_ms": 0.36971900053322315,
       "correct": true
     },
     {
@@ -732,7 +732,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.85,
-      "latency_ms": 0.1893900018185377,
+      "latency_ms": 0.3218729980289936,
       "correct": true
     },
     {
@@ -742,7 +742,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.85,
-      "latency_ms": 0.18373100087046623,
+      "latency_ms": 0.3183279987424612,
       "correct": true
     },
     {
@@ -752,7 +752,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.65,
-      "latency_ms": 0.1866499986499548,
+      "latency_ms": 0.33377500250935555,
       "correct": true
     },
     {
@@ -762,7 +762,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.77,
-      "latency_ms": 0.19801199808716774,
+      "latency_ms": 0.3054330013692379,
       "correct": true
     },
     {
@@ -772,7 +772,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.7,
-      "latency_ms": 0.16364599764347076,
+      "latency_ms": 0.28354499861598015,
       "correct": true
     },
     {
@@ -782,7 +782,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.65,
-      "latency_ms": 0.30804199911653996,
+      "latency_ms": 0.28992800042033195,
       "correct": true
     },
     {
@@ -792,7 +792,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.65,
-      "latency_ms": 0.6750370021909475,
+      "latency_ms": 0.388044998049736,
       "correct": true
     },
     {
@@ -802,7 +802,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.65,
-      "latency_ms": 0.6020170003175735,
+      "latency_ms": 0.3432449996471405,
       "correct": true
     },
     {
@@ -812,7 +812,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.65,
-      "latency_ms": 0.4831150006502867,
+      "latency_ms": 0.33669100143015385,
       "correct": true
     },
     {
@@ -822,7 +822,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.6900000000000001,
-      "latency_ms": 0.5641579981893301,
+      "latency_ms": 0.27734299935400486,
       "correct": true
     },
     {
@@ -832,7 +832,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.6900000000000001,
-      "latency_ms": 0.4167650006711483,
+      "latency_ms": 0.271356999874115,
       "correct": true
     },
     {
@@ -842,7 +842,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.85,
-      "latency_ms": 0.35783199965953827,
+      "latency_ms": 0.2783329989761114,
       "correct": true
     },
     {
@@ -852,7 +852,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.85,
-      "latency_ms": 0.329050999134779,
+      "latency_ms": 0.24701199866831303,
       "correct": true
     },
     {
@@ -862,7 +862,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.85,
-      "latency_ms": 0.3537569995969534,
+      "latency_ms": 0.25951799750328064,
       "correct": true
     },
     {
@@ -872,7 +872,7 @@
       "expected_verdict": "WARN",
       "predicted_verdict": "WARN",
       "score": 0.9199999999999999,
-      "latency_ms": 0.45568399876356125,
+      "latency_ms": 0.4840459991246462,
       "correct": true
     },
     {
@@ -882,7 +882,7 @@
       "expected_verdict": "WARN",
       "predicted_verdict": "WARN",
       "score": 0.9199999999999999,
-      "latency_ms": 0.6082770004868507,
+      "latency_ms": 0.46396400034427643,
       "correct": true
     },
     {
@@ -892,7 +892,7 @@
       "expected_verdict": "WARN",
       "predicted_verdict": "WARN",
       "score": 0.9199999999999999,
-      "latency_ms": 0.5234850011765957,
+      "latency_ms": 0.35185400024056435,
       "correct": true
     },
     {
@@ -902,7 +902,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.85,
-      "latency_ms": 0.42933700047433376,
+      "latency_ms": 0.34212199971079826,
       "correct": true
     },
     {
@@ -912,7 +912,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.85,
-      "latency_ms": 0.4315020013600588,
+      "latency_ms": 0.31058899872004986,
       "correct": true
     },
     {
@@ -922,7 +922,7 @@
       "expected_verdict": "WARN",
       "predicted_verdict": "WARN",
       "score": 0.9199999999999999,
-      "latency_ms": 0.3326779995113611,
+      "latency_ms": 0.2830369994044304,
       "correct": true
     },
     {
@@ -932,7 +932,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.6900000000000001,
-      "latency_ms": 0.32643300108611584,
+      "latency_ms": 0.2981780022382736,
       "correct": true
     },
     {
@@ -942,7 +942,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.7,
-      "latency_ms": 0.30028900131583214,
+      "latency_ms": 0.30781099759042263,
       "correct": true
     },
     {
@@ -952,7 +952,7 @@
       "expected_verdict": "WARN",
       "predicted_verdict": "WARN",
       "score": 0.9199999999999999,
-      "latency_ms": 0.18782100081443787,
+      "latency_ms": 0.29557800106704235,
       "correct": true
     },
     {
@@ -962,7 +962,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.16434700228273869,
+      "latency_ms": 0.31777199916541576,
       "correct": true
     },
     {
@@ -972,7 +972,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.15722700208425522,
+      "latency_ms": 0.30767600052058697,
       "correct": true
     },
     {
@@ -982,7 +982,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.2592660002410412,
+      "latency_ms": 0.31428299844264984,
       "correct": true
     },
     {
@@ -992,7 +992,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.22805599868297577,
+      "latency_ms": 0.3188559990376234,
       "correct": true
     },
     {
@@ -1002,7 +1002,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.1726370006799698,
+      "latency_ms": 0.32020399905741215,
       "correct": true
     },
     {
@@ -1012,7 +1012,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.19377699866890907,
+      "latency_ms": 0.5697190035134554,
       "correct": true
     },
     {
@@ -1022,7 +1022,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.18542500026524067,
+      "latency_ms": 0.30796900019049644,
       "correct": true
     },
     {
@@ -1032,7 +1032,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.19050699844956398,
+      "latency_ms": 0.2839419972151518,
       "correct": true
     },
     {
@@ -1042,7 +1042,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.85,
-      "latency_ms": 0.27086199820041656,
+      "latency_ms": 0.32383600063622,
       "correct": true
     },
     {
@@ -1052,7 +1052,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.65,
-      "latency_ms": 0.3228620011359453,
+      "latency_ms": 0.36703299917280674,
       "correct": true
     },
     {
@@ -1062,7 +1062,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.65,
-      "latency_ms": 0.28257899917662144,
+      "latency_ms": 0.5084670018404722,
       "correct": true
     },
     {
@@ -1072,7 +1072,7 @@
       "expected_verdict": "WARN",
       "predicted_verdict": "WARN",
       "score": 0.9199999999999999,
-      "latency_ms": 0.16552300192415714,
+      "latency_ms": 0.33004799857735634,
       "correct": true
     },
     {
@@ -1082,7 +1082,7 @@
       "expected_verdict": "WARN",
       "predicted_verdict": "WARN",
       "score": 0.9199999999999999,
-      "latency_ms": 0.16762099973857403,
+      "latency_ms": 0.291575001552701,
       "correct": true
     },
     {
@@ -1092,7 +1092,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.85,
-      "latency_ms": 0.17429200001060963,
+      "latency_ms": 0.3374969996511936,
       "correct": true
     },
     {
@@ -1102,7 +1102,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.6900000000000001,
-      "latency_ms": 0.16239799931645393,
+      "latency_ms": 0.30265299789607525,
       "correct": true
     },
     {
@@ -1112,7 +1112,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.7,
-      "latency_ms": 0.16762700118124485,
+      "latency_ms": 0.29699000157415867,
       "correct": true
     },
     {
@@ -1122,7 +1122,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.17894900031387806,
+      "latency_ms": 0.36066700145602226,
       "correct": true
     },
     {
@@ -1132,7 +1132,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.1707440000027418,
+      "latency_ms": 0.35715800151228905,
       "correct": true
     },
     {
@@ -1142,7 +1142,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.1690629981458187,
+      "latency_ms": 0.37885200046002865,
       "correct": true
     },
     {
@@ -1152,7 +1152,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.1687020007520914,
+      "latency_ms": 0.34154799953103065,
       "correct": true
     },
     {
@@ -1162,7 +1162,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.1685819998383522,
+      "latency_ms": 0.34192899987101555,
       "correct": true
     },
     {
@@ -1172,7 +1172,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.16800900176167488,
+      "latency_ms": 0.34379800222814083,
       "correct": true
     },
     {
@@ -1182,7 +1182,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.16648499853909016,
+      "latency_ms": 0.335487999022007,
       "correct": true
     },
     {
@@ -1192,7 +1192,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.16751400008797646,
+      "latency_ms": 0.3332080002874136,
       "correct": true
     },
     {
@@ -1202,7 +1202,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.16656899824738503,
+      "latency_ms": 0.3021189980208874,
       "correct": true
     },
     {
@@ -1212,7 +1212,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.1679190006107092,
+      "latency_ms": 0.30480400286614895,
       "correct": true
     },
     {
@@ -1222,7 +1222,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.15818499960005283,
+      "latency_ms": 0.3046080004423857,
       "correct": true
     },
     {
@@ -1232,7 +1232,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.15497699938714504,
+      "latency_ms": 0.3612959999591112,
       "correct": true
     },
     {
@@ -1242,7 +1242,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.15427500009536743,
+      "latency_ms": 0.34850599989295006,
       "correct": true
     },
     {
@@ -1252,7 +1252,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.15403399989008904,
+      "latency_ms": 0.4893260020762682,
       "correct": true
     },
     {
@@ -1262,7 +1262,7 @@
       "expected_verdict": "ALLOW",
       "predicted_verdict": "ALLOW",
       "score": 1.0,
-      "latency_ms": 0.15406499989330769,
+      "latency_ms": 0.34922200068831444,
       "correct": true
     },
     {
@@ -1272,7 +1272,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.77,
-      "latency_ms": 0.1689699999988079,
+      "latency_ms": 0.4007779974490404,
       "correct": true
     },
     {
@@ -1282,7 +1282,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.85,
-      "latency_ms": 0.1954950001090765,
+      "latency_ms": 0.3797749988734722,
       "correct": true
     },
     {
@@ -1292,7 +1292,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.65,
-      "latency_ms": 0.18190799839794636,
+      "latency_ms": 0.3736179992556572,
       "correct": true
     },
     {
@@ -1302,7 +1302,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.77,
-      "latency_ms": 0.16373000107705593,
+      "latency_ms": 0.35537299886345863,
       "correct": true
     },
     {
@@ -1312,7 +1312,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.5700000000000001,
-      "latency_ms": 0.218062000349164,
+      "latency_ms": 0.42079900205135345,
       "correct": true
     },
     {
@@ -1322,7 +1322,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.5700000000000001,
-      "latency_ms": 0.23072000220417976,
+      "latency_ms": 0.477182999253273,
       "correct": true
     },
     {
@@ -1332,7 +1332,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.5700000000000001,
-      "latency_ms": 0.21629000082612038,
+      "latency_ms": 0.4004209991544485,
       "correct": true
     },
     {
@@ -1342,7 +1342,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.5700000000000001,
-      "latency_ms": 0.21290000155568123,
+      "latency_ms": 0.3998589999973774,
       "correct": true
     },
     {
@@ -1352,7 +1352,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.52,
-      "latency_ms": 0.2223300002515316,
+      "latency_ms": 0.41270099952816963,
       "correct": true
     },
     {
@@ -1362,7 +1362,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.32,
-      "latency_ms": 0.3883320018649101,
+      "latency_ms": 0.4756120014935732,
       "correct": true
     },
     {
@@ -1372,7 +1372,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.44000000000000006,
-      "latency_ms": 0.5354050006717443,
+      "latency_ms": 0.4231569990515709,
       "correct": true
     },
     {
@@ -1382,7 +1382,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.52,
-      "latency_ms": 0.6828339993953705,
+      "latency_ms": 0.3902220018208027,
       "correct": true
     },
     {
@@ -1392,7 +1392,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.52,
-      "latency_ms": 0.5036949999630451,
+      "latency_ms": 0.47018500231206417,
       "correct": true
     },
     {
@@ -1402,7 +1402,7 @@
       "expected_verdict": "BLOCK",
       "predicted_verdict": "BLOCK",
       "score": 0.52,
-      "latency_ms": 0.844718998298049,
+      "latency_ms": 0.5412999987602234,
       "correct": true
     }
   ]

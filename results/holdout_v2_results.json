@@ -1,8 +1,8 @@
 {
-  "generated_at_utc": "2026-11-05T20:18:47Z",
+  "generated_at_utc": "2026-11-05T20:26:19Z",
   "engine": "policy-rules-v1",
   "engine_version": "1.0.0",
-  "source_revision": "99468798c1c7e48d90f7bc25938fa5b7b451c5f5",
+  "source_revision": "7fa7b79f114879ac4117fc868bdd0295f62fbca0",
   "config_hash": "6e7d9db26a4cb01d7afe56325f542a396987b136de2db733b0e31d85cbee4d3f",
   "dataset_path": "/home/kali/Desktop/mcp-consist-main/data/eval_holdout_v2.jsonl",
   "dataset_sha256": "bcdfbb88480b9a60697c8bdf68c4f5f3b124ad6f6d2aed580a00fdf5c24a359a",
@@ -87,6 +87,6 @@
     "benign_false_positive_rate": 0.0
   },
   "benign_false_positive_rate": 0.0,
-  "latency_p50_ms": 0.20400400087237358,
-  "latency_p95_ms": 0.45421799989417183
+  "latency_p50_ms": 0.1733394991606474,
+  "latency_p95_ms": 0.4226029513403766
 }

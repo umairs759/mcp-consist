@@ -40,6 +40,7 @@ results/ablation_results.json generated with genuine layer disabling.
 
 ## J. Adversarial testing
 results/robustness_results.json generated from deterministic transformations.
+False positives: 0; false negatives: 3; benign FPR: 0.0; transformed cases: 522.
 
 ## K. Security review
 docs/SECURITY_REVIEW.md, docs/THREAT_MODEL.md. Source-level self-assessment;

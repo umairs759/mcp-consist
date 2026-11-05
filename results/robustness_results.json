@@ -1,27 +1,100 @@
 {
-  "generated_at_utc": "2026-11-05T20:06:19Z",
+  "generated_at_utc": "2026-11-05T20:26:37Z",
   "engine": "policy-rules-v1",
   "engine_version": "1.0.0",
-  "source_revision": "57a8030b1a64bab64547d22c86251dec6c568769",
-  "dataset_provenance": "synthetic, authored by project author (transformed)",
+  "source_revision": "7fa7b79f114879ac4117fc868bdd0295f62fbca0",
+  "config_hash": "6e7d9db26a4cb01d7afe56325f542a396987b136de2db733b0e31d85cbee4d3f",
+  "dataset_provenance": "synthetic transformations of author-authored cases",
   "seed": 42,
   "original_case_count": 101,
   "transformed_case_count": 522,
-  "transformation_categories": [
-    "benign_near_miss",
-    "bidi_injection",
+  "category_a_label_preserving": [
     "case_change",
-    "embedded_tool_call_variants",
-    "host_confusion_variants",
-    "path_traversal_variants",
-    "unicode_normalization",
     "whitespace",
-    "zero_width_injection"
+    "unicode_normalization"
   ],
+  "category_b_security_relevant": [
+    "zero_width_injection",
+    "bidi_injection",
+    "path_traversal_variants",
+    "host_confusion_variants",
+    "embedded_tool_call_variants",
+    "benign_near_miss"
+  ],
+  "per_category_results": {
+    "A": {
+      "total": 308,
+      "correct": 305,
+      "fp": 0,
+      "fn": 3
+    },
+    "B": {
+      "total": 214,
+      "correct": 213,
+      "fp": 0,
+      "fn": 0
+    }
+  },
+  "per_transformation_metrics": {
+    "case_change": {
+      "total": 101,
+      "correct": 101,
+      "fp": 0,
+      "fn": 0
+    },
+    "whitespace": {
+      "total": 101,
+      "correct": 98,
+      "fp": 0,
+      "fn": 3
+    },
+    "unicode_normalization": {
+      "total": 101,
+      "correct": 101,
+      "fp": 0,
+      "fn": 0
+    },
+    "zero_width_injection": {
+      "total": 101,
+      "correct": 101,
+      "fp": 0,
+      "fn": 0
+    },
+    "bidi_injection": {
+      "total": 101,
+      "correct": 100,
+      "fp": 0,
+      "fn": 0
+    },
+    "path_traversal_variants": {
+      "total": 5,
+      "correct": 5,
+      "fp": 0,
+      "fn": 0
+    },
+    "host_confusion_variants": {
+      "total": 4,
+      "correct": 4,
+      "fp": 0,
+      "fn": 0
+    },
+    "embedded_tool_call_variants": {
+      "total": 3,
+      "correct": 3,
+      "fp": 0,
+      "fn": 0
+    },
+    "benign_near_miss": {
+      "total": 5,
+      "correct": 5,
+      "fp": 0,
+      "fn": 0
+    }
+  },
   "per_rule_detection_counts": {
     "R-101": 221,
     "R-102": 133,
-    "R-201": 143,
+    "R-201": 98,
     "R-202": 45,
     "R-301": 296,
     "R-302": 120,
@@ -31,362 +104,33 @@
     "R-402": 12,
     "R-501": 11
   },
-  "verdict_flip_count": 161,
+  "false_positive_count": 0,
   "false_negative_count": 3,
-  "false_positive_count": 106,
-  "benign_total": 270,
-  "benign_false_positive_rate": 0.3925925925925926,
-  "missed_patterns_sample": [
+  "benign_total": 164,
+  "benign_false_positive_rate": 0.0,
+  "false_positive_examples": [],
+  "false_negative_examples": [
     {
-      "case_id": "eval-001::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
+      "case_id": "eval-051::whitespace",
+      "transform": "whitespace",
+      "category": "A",
+      "expected": "BLOCK",
+      "predicted": "ALLOW"
     },
     {
-      "case_id": "eval-001::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
+      "case_id": "eval-052::whitespace",
+      "transform": "whitespace",
+      "category": "A",
+      "expected": "BLOCK",
+      "predicted": "ALLOW"
     },
     {
-      "case_id": "eval-002::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-002::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-003::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-003::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-004::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-004::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-005::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-005::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-006::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-006::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-007::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-007::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-008::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-008::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-009::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-009::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-010::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-010::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-011::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-011::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-012::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-012::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-013::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-013::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-014::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-014::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-015::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-015::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-016::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-016::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-017::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-017::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-018::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-018::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-019::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-019::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-020::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-020::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-021::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-021::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-022::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-022::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-023::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-023::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-024::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-024::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-025::zero_width_injection",
-      "transform": "zero_width_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
-    },
-    {
-      "case_id": "eval-025::bidi_injection",
-      "transform": "bidi_injection",
-      "expected": "ALLOW",
-      "predicted": "BLOCK",
-      "attack_family": "benign"
+      "case_id": "eval-070::whitespace",
+      "transform": "whitespace",
+      "category": "A",
+      "expected": "BLOCK",
+      "predicted": "ALLOW"
     }
   ],
-  "limitations": "All cases are synthetic transformations of author-authored cases; not real-world attack observations. Transformations are bounded and deterministic. JSON fields are kept valid where possible; some transforms may alter text only. No external validation claimed."
+  "limitations": "All cases are synthetic transformations. Category A preserves the original expected verdict (formatting/normalization). Category B has independently justified expected outcomes based on documented rules. Not real-world attack observations. No external validation."
 }

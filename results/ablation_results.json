@@ -1,8 +1,8 @@
 {
-  "generated_at_utc": "2026-11-05T20:19:03Z",
+  "generated_at_utc": "2026-11-05T20:26:20Z",
   "engine": "policy-rules-v1",
   "engine_version": "1.0.0",
-  "source_revision": "99468798c1c7e48d90f7bc25938fa5b7b451c5f5",
+  "source_revision": "7fa7b79f114879ac4117fc868bdd0295f62fbca0",
   "dataset_path": "/home/kali/Desktop/mcp-consist-main/data/eval_cases.jsonl",
   "dataset_sha256": "c2b1be7e4825782c169ba932f6156e13279e806d5fb7dd05322e348907650157",
   "dataset_provenance": "synthetic, authored by project author",

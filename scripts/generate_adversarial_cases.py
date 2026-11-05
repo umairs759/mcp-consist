@@ -57,6 +57,14 @@ def _source_revision():
         return "unknown"
 
 
+def _config_hash():
+    import hashlib
+    h = hashlib.sha256()
+    for p in sorted((PROJECT_ROOT / "mcp_consist").glob("*.py")):
+        h.update(p.read_bytes())
+    return h.hexdigest()
+
+
 def _load_cases(path):
     cases = []
     with open(path, "r", encoding="utf-8") as fh:
@@ -294,6 +302,7 @@ def main():
         "engine": ENGINE_NAME,
         "engine_version": ENGINE_VERSION,
         "source_revision": _source_revision(),
+        "config_hash": _config_hash(),
         "dataset_provenance": "synthetic transformations of author-authored cases",
         "seed": SEED,
         "original_case_count": len(original_cases),
@@ -332,5 +341,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-EOF
-.venv/bin/python scripts/generate_adversarial_cases.py 2>&1 | tail -8
