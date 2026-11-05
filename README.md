@@ -125,34 +125,35 @@ flowchart LR
 ```
 
 ---
-
 ## Architecture
 
 ```mermaid
 flowchart LR
-    A[analyze(ctx, threshold)] --> B[Input Validation]
-    B --> C[Safe JSON Parsing]
-    C --> D[Layer Applicability]
-    D --> E[Rule Execution]
-    E --> F[Layer Scoring]
-    F --> G[Overall Weighted Score]
-    G --> H[Verdict Policy]
-    H --> I[Explainable Analysis Result]
+    A["analyze(ctx, threshold)"] --> B["Input Validation"]
+    B --> C["Safe JSON Parsing"]
+    C --> D["Layer Applicability"]
+    D --> E["Rule Execution"]
+    E --> F["Layer Scoring"]
+    F --> G["Overall Weighted Score"]
+    G --> H["Verdict Policy"]
+    H --> I["Explainable Analysis Result"]
 ```
 
-Execution sequence:
+### Execution Sequence
 
-1. Validate the context (types, lengths, required call, threshold).
-2. Parse JSON fields safely (`json.loads` only; no execution).
-3. Compute layer applicability from field presence and enabled layers.
-4. Execute all applicable rules (disabled layers are skipped).
-5. Score each applicable layer: `max(0.0, 1.0 - sum penalties)`.
-6. Compute overall score as weighted average of applicable layer scores.
-7. Apply the documented verdict policy.
-8. Return verdict, score, engine identity, measured latency, layers, findings,
-   trace, and override.
+1. **Input Validation:** Validate the context, including data types, input lengths, required tool-call information, and threshold values.
+2. **Safe JSON Parsing:** Parse JSON fields using `json.loads` without executing user-provided content.
+3. **Layer Applicability:** Determine which detection layers apply based on available context fields and enabled layers.
+4. **Rule Execution:** Execute all applicable detection rules. Rules belonging to disabled layers are skipped.
+5. **Layer Scoring:** Calculate each applicable layer's score using the configured severity penalties:
 
-N/A layers have a `null` score and are excluded from scoring.
+   `max(0.0, 1.0 - sum(penalties))`
+
+6. **Overall Scoring:** Calculate the weighted average of applicable layer scores.
+7. **Verdict Policy:** Apply the documented decision policy to determine the final verdict.
+8. **Analysis Result:** Return the verdict, overall score, engine identity, measured latency, layer results, findings, decision trace, and override information.
+
+**N/A Layer Handling:** Layers that are not applicable have a `null` score and are excluded from the overall scoring calculation.
 
 ### Internal Pipeline
 
