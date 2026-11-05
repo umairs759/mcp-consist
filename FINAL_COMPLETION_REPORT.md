@@ -23,7 +23,9 @@ Stage 1 tab + Joint Context tab; reports; history. XSS-safe.
 134 tests passed (`pytest tests/ -v` and `pytest -q`).
 
 ## H. Evaluation
-101 cases; metrics in results/eval_results.json (acc 0.9109, binary F1 1.0).
+101 cases; metrics in results/eval_results.json (multiclass acc 1.0, binary F1
+1.0, macro F1 0.75 all-4 / 1.0 observed). Independent holdout v2: 30 cases,
+accuracy 0.9667.
 
 ## I. Ablation
 results/ablation_results.json generated.

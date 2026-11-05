@@ -30,9 +30,10 @@ history. XSS-safe.
 `.venv/bin/python -m pytest -q` -> 134 passed.
 
 ## H. Evaluation
-101 synthetic cases (dev 54, holdout 47). Accuracy 0.9109, binary P/R/F1
-1.0/1.0/1.0, macro F1 0.5892, weighted F1 0.8924, benign FPR 0.0.
-Confusion matrix in results/eval_results.json.
+101 synthetic cases (dev 54, holdout 47). Multiclass accuracy 1.0; binary P/R/F1
+1.0/1.0/1.0; macro F1 0.75 (all 4 classes) / 1.0 (observed); weighted F1 1.0;
+benign FPR 0.0. ERROR support 0 (not evaluated). Independent holdout v2: 30
+cases, accuracy 0.9667. Confusion matrix in results/eval_results.json.
 
 ## I. Ablation
 results/ablation_results.json generated with genuine layer disabling.
